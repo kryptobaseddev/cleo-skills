@@ -1,0 +1,25 @@
+{
+  "$schema": "./schemas/log.schema.json",
+  "version": "2.4.0",
+  "project": "cleo-skills",
+  "_meta": {
+    "schemaVersion": "2.4.0",
+    "totalEntries": 1,
+    "firstEntry": "2026-02-12T21:32:07Z",
+    "lastEntry": "2026-02-12T21:32:07Z",
+    "entriesPruned": 0
+  },
+  "entries": [
+    {
+      "id": "log_88dbe9b850ef",
+      "timestamp": "2026-02-12T21:32:07Z",
+      "sessionId": null,
+      "action": "system_initialized",
+      "actor": "system",
+      "taskId": null,
+      "before": null,
+      "after": null,
+      "details": "CLEO system initialized for project: cleo-skills"
+    }
+  ]
+}
