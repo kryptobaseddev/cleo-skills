@@ -495,3 +495,12 @@ fi
 | Auth & SSO | `references/auth-sso.md` | Visitor auth, Auth0/Okta/Azure AD, SAML, adaptive |
 | LLM-Ready | `references/llm-ready.md` | llms.txt, MCP server, Markdown endpoints, SEO |
 | Migration | `references/migration.md` | MkDocs, Docusaurus, legacy GitBook v1/v2 |
+
+## Starter Templates
+
+Copy these assets into a new project to bootstrap a GitBook-ready repository:
+
+| Asset | File | Description |
+|-------|------|-------------|
+| GitBook config | `assets/gitbook.yaml` | Starter `.gitbook.yaml` with root, structure, and redirects |
+| Table of contents | `assets/SUMMARY.md` | Starter `SUMMARY.md` with multi-section navigation |

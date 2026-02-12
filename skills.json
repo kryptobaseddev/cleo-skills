@@ -1,5 +1,5 @@
 {
   "version": "1.0.0",
-  "generated": "2026-02-12T20:19:34Z",
+  "generated": "2026-02-12T20:51:59Z",
   "skills": [{"name":"ct-gitbook","description":"Comprehensive guide for the modern GitBook platform including Docs Sites publishing, @gitbook/api TypeScript SDK, Git Sync with GitHub App, Change Requests, Site Sections, adaptive content, visitor authentication (Auth0/Okta/Azure AD), LLM-ready docs (llms.txt, MCP server), OpenAPI integration, content blocks, custom domains, SSO/SAML, SEO optimization, and migration from MkDocs/Docusaurus. Use when creating, managing, or automating GitBook documentation sites, configuring Git Sync, working with the GitBook API, setting up authentication, or migrating documentation to GitBook.","path":"skills/ct-gitbook/SKILL.md","references":["skills/ct-gitbook/references/api-sdk.md","skills/ct-gitbook/references/auth-sso.md","skills/ct-gitbook/references/change-requests.md","skills/ct-gitbook/references/content-blocks.md","skills/ct-gitbook/references/docs-sites.md","skills/ct-gitbook/references/git-sync.md","skills/ct-gitbook/references/llm-ready.md","skills/ct-gitbook/references/migration.md"],"metadata":{}}]
 }
