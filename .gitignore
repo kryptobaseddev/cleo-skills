@@ -1,0 +1,19 @@
+# Temporary files
+.tmp/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+
+# Editor
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Logs
+*.log
