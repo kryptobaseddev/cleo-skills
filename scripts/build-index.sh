@@ -118,7 +118,7 @@ for skill_dir in "$SKILLS_DIR"/*/; do
   fi
 
   # Validate no consecutive hyphens
-  if echo "$name" | grep -q '\-\-'; then
+  if echo "$name" | grep -qF -- '--'; then
     echo "ERROR: $skill_file name '$name' contains consecutive hyphens"
     ERRORS=$((ERRORS + 1))
   fi
@@ -183,18 +183,16 @@ for skill_dir in "$SKILLS_DIR"/*/; do
   fi
   skills_json+="$entry"
 
-  echo "OK: $name ($body_lines lines, $desc_len char description, $(echo "$refs_json" | grep -o '"' | wc -l | awk '{print $1/2}') references)"
+  ref_count=0
+  if [ -d "$skill_dir/references" ]; then
+    ref_count=$(find "$skill_dir/references" -maxdepth 1 -type f | wc -l)
+  fi
+  echo "OK: $name ($body_lines lines, $desc_len char description, $ref_count references)"
 done
 
 skills_json+=']'
 
-if [ "$ERRORS" -gt 0 ]; then
-  echo ""
-  echo "FAILED: $ERRORS validation error(s)"
-  exit 1
-fi
-
-# Write skills.json
+# Write skills.json regardless of validation errors
 generated="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 cat > "$OUTPUT" << ENDJSON
 {
@@ -203,6 +201,13 @@ cat > "$OUTPUT" << ENDJSON
   "skills": $skills_json
 }
 ENDJSON
+
+if [ "$ERRORS" -gt 0 ]; then
+  echo ""
+  echo "Generated $OUTPUT (with $ERRORS validation warning(s))"
+  echo "FAILED: $ERRORS validation error(s)"
+  exit 1
+fi
 
 echo ""
 echo "Generated $OUTPUT"
