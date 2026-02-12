@@ -1,0 +1,33 @@
+# CLEO internals
+.cleo/
+claudedocs/
+
+# Agent config files
+CLAUDE.md
+AGENTS.md
+GEMINI.md
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp
+.tmp/
+*.log
+
+# Context7 config (not needed in package)
+context7.json
+
+# Node
+node_modules/

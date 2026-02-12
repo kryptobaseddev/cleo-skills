@@ -1,0 +1,45 @@
+{
+  "name": "@cleocode/ct-skills",
+  "version": "1.0.0",
+  "description": "Official skills library for the CLEO multi-agent orchestration ecosystem. Agentskills.io-compliant SKILL.md markdown files for context injection into subagent spawns.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "skills/",
+    "skills.json",
+    "scripts/",
+    "docs/",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "bash scripts/build-index.sh",
+    "prepublishOnly": "bash scripts/build-index.sh"
+  },
+  "keywords": [
+    "cleo",
+    "agent-skills",
+    "agentskills",
+    "multi-agent",
+    "orchestration",
+    "skills",
+    "markdown",
+    "context-injection",
+    "subagent",
+    "llm"
+  ],
+  "author": "kryptobaseddev",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kryptobaseddev/cleo-skills.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kryptobaseddev/cleo-skills/issues"
+  },
+  "homepage": "https://github.com/kryptobaseddev/cleo-skills#readme",
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
