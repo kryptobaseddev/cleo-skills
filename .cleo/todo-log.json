@@ -4,9 +4,9 @@
   "project": "cleo-skills",
   "_meta": {
     "schemaVersion": "2.4.0",
-    "totalEntries": 29,
+    "totalEntries": 41,
     "firstEntry": "2026-02-12T21:32:07Z",
-    "lastEntry": "2026-02-13T04:10:31Z",
+    "lastEntry": "2026-02-13T04:11:16Z",
     "entriesPruned": 0
   },
   "entries": [
@@ -523,6 +523,462 @@
       "scope": {
         "type": "epic",
         "rootTaskId": "T001"
+      }
+    },
+    {
+      "id": "log-1770955836-a59c3a",
+      "timestamp": "2026-02-13T04:10:36Z",
+      "action": "task_created",
+      "taskId": "T012",
+      "actor": "system",
+      "details": {
+        "title": "Epic: Initial release @cleocode/ct-skills v1.0.0",
+        "status": "pending",
+        "priority": "medium"
+      },
+      "before": null,
+      "after": {
+        "title": "Epic: Initial release @cleocode/ct-skills v1.0.0",
+        "status": "pending",
+        "priority": "medium"
+      }
+    },
+    {
+      "id": "log-1770955847-f6b900",
+      "timestamp": "2026-02-13T04:10:47Z",
+      "action": "task_created",
+      "taskId": "T013",
+      "actor": "system",
+      "details": {
+        "title": "Initialize cleo-skills repo with ct-gitbook skill",
+        "status": "pending",
+        "priority": "medium"
+      },
+      "before": null,
+      "after": {
+        "title": "Initialize cleo-skills repo with ct-gitbook skill",
+        "status": "pending",
+        "priority": "medium"
+      }
+    },
+    {
+      "id": "log-1770955847-1b9912",
+      "timestamp": "2026-02-13T04:10:47Z",
+      "action": "task_created",
+      "taskId": "T014",
+      "actor": "system",
+      "details": {
+        "title": "Add starter template assets for ct-gitbook",
+        "status": "pending",
+        "priority": "medium"
+      },
+      "before": null,
+      "after": {
+        "title": "Add starter template assets for ct-gitbook",
+        "status": "pending",
+        "priority": "medium"
+      }
+    },
+    {
+      "id": "log-1770955848-ba9774",
+      "timestamp": "2026-02-13T04:10:48Z",
+      "action": "task_created",
+      "taskId": "T015",
+      "actor": "system",
+      "details": {
+        "title": "Add 15 skills across 4 tiers (orchestration, planning, execution, specialized)",
+        "status": "pending",
+        "priority": "medium"
+      },
+      "before": null,
+      "after": {
+        "title": "Add 15 skills across 4 tiers (orchestration, planning, execution, specialized)",
+        "status": "pending",
+        "priority": "medium"
+      }
+    },
+    {
+      "id": "log-1770955848-36b9bc",
+      "timestamp": "2026-02-13T04:10:48Z",
+      "action": "task_created",
+      "taskId": "T016",
+      "actor": "system",
+      "details": {
+        "title": "Create _shared/ protocol infrastructure (subagent-protocol-base, task-system-integration, style guide, placeholders)",
+        "status": "pending",
+        "priority": "medium"
+      },
+      "before": null,
+      "after": {
+        "title": "Create _shared/ protocol infrastructure (subagent-protocol-base, task-system-integration, style guide, placeholders)",
+        "status": "pending",
+        "priority": "medium"
+      }
+    },
+    {
+      "id": "log-1770955849-fa2e4f",
+      "timestamp": "2026-02-13T04:10:49Z",
+      "action": "task_created",
+      "taskId": "T017",
+      "actor": "system",
+      "details": {
+        "title": "Document CLEO ecosystem architecture, _shared/, and dual manifests",
+        "status": "pending",
+        "priority": "medium"
+      },
+      "before": null,
+      "after": {
+        "title": "Document CLEO ecosystem architecture, _shared/, and dual manifests",
+        "status": "pending",
+        "priority": "medium"
+      }
+    },
+    {
+      "id": "log-1770955849-361c70",
+      "timestamp": "2026-02-13T04:10:49Z",
+      "action": "task_created",
+      "taskId": "T018",
+      "actor": "system",
+      "details": {
+        "title": "Extract ct-orchestrator content into progressive disclosure references",
+        "status": "pending",
+        "priority": "medium"
+      },
+      "before": null,
+      "after": {
+        "title": "Extract ct-orchestrator content into progressive disclosure references",
+        "status": "pending",
+        "priority": "medium"
+      }
+    },
+    {
+      "id": "log-1770955850-e7a38a",
+      "timestamp": "2026-02-13T04:10:50Z",
+      "action": "task_created",
+      "taskId": "T019",
+      "actor": "system",
+      "details": {
+        "title": "Create build-index.sh to validate skills and generate skills.json",
+        "status": "pending",
+        "priority": "medium"
+      },
+      "before": null,
+      "after": {
+        "title": "Create build-index.sh to validate skills and generate skills.json",
+        "status": "pending",
+        "priority": "medium"
+      }
+    },
+    {
+      "id": "log-1770955850-168646",
+      "timestamp": "2026-02-13T04:10:50Z",
+      "action": "task_created",
+      "taskId": "T020",
+      "actor": "system",
+      "details": {
+        "title": "Create manifest.json dispatch registry for CLEO orchestrator",
+        "status": "pending",
+        "priority": "medium"
+      },
+      "before": null,
+      "after": {
+        "title": "Create manifest.json dispatch registry for CLEO orchestrator",
+        "status": "pending",
+        "priority": "medium"
+      }
+    },
+    {
+      "id": "log-1770955851-ba7c28",
+      "timestamp": "2026-02-13T04:10:51Z",
+      "action": "task_created",
+      "taskId": "T021",
+      "actor": "system",
+      "details": {
+        "title": "Create Node.js API (index.js) with listSkills, getSkill, getSkillPath, getDispatchMatrix, readSkillContent",
+        "status": "pending",
+        "priority": "medium"
+      },
+      "before": null,
+      "after": {
+        "title": "Create Node.js API (index.js) with listSkills, getSkill, getSkillPath, getDispatchMatrix, readSkillContent",
+        "status": "pending",
+        "priority": "medium"
+      }
+    },
+    {
+      "id": "log-1770955851-2175e3",
+      "timestamp": "2026-02-13T04:10:51Z",
+      "action": "task_created",
+      "taskId": "T022",
+      "actor": "system",
+      "details": {
+        "title": "Create TypeScript declarations (index.d.ts)",
+        "status": "pending",
+        "priority": "medium"
+      },
+      "before": null,
+      "after": {
+        "title": "Create TypeScript declarations (index.d.ts)",
+        "status": "pending",
+        "priority": "medium"
+      }
+    },
+    {
+      "id": "log-1770955852-364a5e",
+      "timestamp": "2026-02-13T04:10:52Z",
+      "action": "task_created",
+      "taskId": "T023",
+      "actor": "system",
+      "details": {
+        "title": "Publish as npm package @cleocode/ct-skills v1.0.0",
+        "status": "pending",
+        "priority": "medium"
+      },
+      "before": null,
+      "after": {
+        "title": "Publish as npm package @cleocode/ct-skills v1.0.0",
+        "status": "pending",
+        "priority": "medium"
+      }
+    },
+    {
+      "id": "log_431cb1981998",
+      "timestamp": "2026-02-13T04:11:05Z",
+      "sessionId": null,
+      "action": "status_changed",
+      "actor": "system",
+      "taskId": "T013",
+      "before": {
+        "status": "pending",
+        "completedAt": null
+      },
+      "after": {
+        "status": "done",
+        "completedAt": "2026-02-13T04:11:04Z"
+      },
+      "details": {
+        "field": "status",
+        "operation": "complete"
+      }
+    },
+    {
+      "id": "log_d404d3cd9695",
+      "timestamp": "2026-02-13T04:11:06Z",
+      "sessionId": null,
+      "action": "status_changed",
+      "actor": "system",
+      "taskId": "T014",
+      "before": {
+        "status": "pending",
+        "completedAt": null
+      },
+      "after": {
+        "status": "done",
+        "completedAt": "2026-02-13T04:11:05Z"
+      },
+      "details": {
+        "field": "status",
+        "operation": "complete"
+      }
+    },
+    {
+      "id": "log_edad1d247851",
+      "timestamp": "2026-02-13T04:11:07Z",
+      "sessionId": null,
+      "action": "status_changed",
+      "actor": "system",
+      "taskId": "T015",
+      "before": {
+        "status": "pending",
+        "completedAt": null
+      },
+      "after": {
+        "status": "done",
+        "completedAt": "2026-02-13T04:11:06Z"
+      },
+      "details": {
+        "field": "status",
+        "operation": "complete"
+      }
+    },
+    {
+      "id": "log_fde0aa57d960",
+      "timestamp": "2026-02-13T04:11:08Z",
+      "sessionId": null,
+      "action": "status_changed",
+      "actor": "system",
+      "taskId": "T016",
+      "before": {
+        "status": "pending",
+        "completedAt": null
+      },
+      "after": {
+        "status": "done",
+        "completedAt": "2026-02-13T04:11:07Z"
+      },
+      "details": {
+        "field": "status",
+        "operation": "complete"
+      }
+    },
+    {
+      "id": "log_03954db5027e",
+      "timestamp": "2026-02-13T04:11:09Z",
+      "sessionId": null,
+      "action": "status_changed",
+      "actor": "system",
+      "taskId": "T017",
+      "before": {
+        "status": "pending",
+        "completedAt": null
+      },
+      "after": {
+        "status": "done",
+        "completedAt": "2026-02-13T04:11:08Z"
+      },
+      "details": {
+        "field": "status",
+        "operation": "complete"
+      }
+    },
+    {
+      "id": "log_81d2968d5cc4",
+      "timestamp": "2026-02-13T04:11:10Z",
+      "sessionId": null,
+      "action": "status_changed",
+      "actor": "system",
+      "taskId": "T018",
+      "before": {
+        "status": "pending",
+        "completedAt": null
+      },
+      "after": {
+        "status": "done",
+        "completedAt": "2026-02-13T04:11:09Z"
+      },
+      "details": {
+        "field": "status",
+        "operation": "complete"
+      }
+    },
+    {
+      "id": "log_b0f576fc281a",
+      "timestamp": "2026-02-13T04:11:11Z",
+      "sessionId": null,
+      "action": "status_changed",
+      "actor": "system",
+      "taskId": "T019",
+      "before": {
+        "status": "pending",
+        "completedAt": null
+      },
+      "after": {
+        "status": "done",
+        "completedAt": "2026-02-13T04:11:10Z"
+      },
+      "details": {
+        "field": "status",
+        "operation": "complete"
+      }
+    },
+    {
+      "id": "log_bda7d4c30730",
+      "timestamp": "2026-02-13T04:11:12Z",
+      "sessionId": null,
+      "action": "status_changed",
+      "actor": "system",
+      "taskId": "T020",
+      "before": {
+        "status": "pending",
+        "completedAt": null
+      },
+      "after": {
+        "status": "done",
+        "completedAt": "2026-02-13T04:11:11Z"
+      },
+      "details": {
+        "field": "status",
+        "operation": "complete"
+      }
+    },
+    {
+      "id": "log_bba21d8c3dad",
+      "timestamp": "2026-02-13T04:11:13Z",
+      "sessionId": null,
+      "action": "status_changed",
+      "actor": "system",
+      "taskId": "T021",
+      "before": {
+        "status": "pending",
+        "completedAt": null
+      },
+      "after": {
+        "status": "done",
+        "completedAt": "2026-02-13T04:11:12Z"
+      },
+      "details": {
+        "field": "status",
+        "operation": "complete"
+      }
+    },
+    {
+      "id": "log_bc632f90342b",
+      "timestamp": "2026-02-13T04:11:14Z",
+      "sessionId": null,
+      "action": "status_changed",
+      "actor": "system",
+      "taskId": "T022",
+      "before": {
+        "status": "pending",
+        "completedAt": null
+      },
+      "after": {
+        "status": "done",
+        "completedAt": "2026-02-13T04:11:13Z"
+      },
+      "details": {
+        "field": "status",
+        "operation": "complete"
+      }
+    },
+    {
+      "id": "log_23cd5b64ea24",
+      "timestamp": "2026-02-13T04:11:15Z",
+      "sessionId": null,
+      "action": "status_changed",
+      "actor": "system",
+      "taskId": "T023",
+      "before": {
+        "status": "pending",
+        "completedAt": null
+      },
+      "after": {
+        "status": "done",
+        "completedAt": "2026-02-13T04:11:14Z"
+      },
+      "details": {
+        "field": "status",
+        "operation": "complete"
+      }
+    },
+    {
+      "id": "log_7266cc700a86",
+      "timestamp": "2026-02-13T04:11:16Z",
+      "sessionId": null,
+      "action": "status_changed",
+      "actor": "system",
+      "taskId": "T012",
+      "before": {
+        "status": "pending",
+        "completedAt": null
+      },
+      "after": {
+        "status": "done",
+        "completedAt": "2026-02-13T04:11:15Z"
+      },
+      "details": {
+        "field": "status",
+        "operation": "complete"
       }
     }
   ]

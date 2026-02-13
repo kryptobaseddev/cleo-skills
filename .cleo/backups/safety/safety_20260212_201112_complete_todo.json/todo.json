@@ -69,39 +69,17 @@
         "notes": null,
         "gitTag": "v2.0.0",
         "changelog": "## [2.0.0] - 2026-02-12\n\n### Other Changes\n- Epic: Evolve ct-skills into Registry/Catalog API v2.0.0 (T001)\n- Copy 12 protocol files from CLEO repo to protocols/ (T002)\n- Evolve SKILL.md frontmatter for all 17 skills (T003)\n- Update build-index.sh to extract new frontmatter fields (T004)\n- Create install profiles (minimal, core, recommended, full) (T005)\n- Evolve index.js into Registry/Catalog API (T006)\n- Update index.d.ts with full type declarations (T007)\n- Create CLI bin/ct-skills.js (T008)\n- Update package.json to v2.0.0 with bin entry (T009)\n- Create manifest generation script and dispatch-config.json (T010)\n- Update .npmignore, run builds, verify (T011)"
-      },
-      {
-        "version": "v1.0.0",
-        "status": "planned",
-        "targetDate": null,
-        "releasedAt": null,
-        "createdAt": "2026-02-13T04:11:22Z",
-        "tasks": [
-          "T012",
-          "T013",
-          "T014",
-          "T015",
-          "T016",
-          "T017",
-          "T018",
-          "T019",
-          "T020",
-          "T021",
-          "T022",
-          "T023"
-        ],
-        "notes": null
       }
     ]
   },
-  "lastUpdated": "2026-02-13T04:11:22Z",
+  "lastUpdated": "2026-02-13T04:11:11Z",
   "_meta": {
     "schemaVersion": "2.10.0",
-    "checksum": "0fed7c3a23a2b8c4",
+    "checksum": "1f2c8ad0e1da0d22",
     "configVersion": "2.10.0",
     "lastSessionId": null,
     "activeSession": null,
-    "generation": 51,
+    "generation": 42,
     "lastModified": "2026-02-13T04:10:31Z",
     "multiSessionEnabled": true,
     "activeSessionCount": 1
@@ -488,20 +466,16 @@
     {
       "id": "T012",
       "title": "Epic: Initial release @cleocode/ct-skills v1.0.0",
-      "status": "done",
+      "status": "pending",
       "priority": "medium",
       "type": "epic",
       "parentId": null,
       "createdAt": "2026-02-13T04:10:36Z",
-      "updatedAt": "2026-02-13T04:11:15Z",
+      "updatedAt": "2026-02-13T04:10:36Z",
       "size": "medium",
       "position": 2,
       "positionVersion": 0,
-      "phase": "setup",
-      "completedAt": "2026-02-13T04:11:15Z",
-      "notes": [
-        "[COMPLETED 2026-02-13T04:11:15Z] Initial release complete"
-      ]
+      "phase": "setup"
     },
     {
       "id": "T013",
@@ -770,101 +744,44 @@
     {
       "id": "T021",
       "title": "Create Node.js API (index.js) with listSkills, getSkill, getSkillPath, getDispatchMatrix, readSkillContent",
-      "status": "done",
+      "status": "pending",
       "priority": "medium",
       "type": "task",
       "parentId": "T012",
       "createdAt": "2026-02-13T04:10:51Z",
-      "updatedAt": "2026-02-13T04:11:12Z",
+      "updatedAt": "2026-02-13T04:10:51Z",
       "size": "medium",
       "position": 9,
       "positionVersion": 0,
-      "phase": "setup",
-      "completedAt": "2026-02-13T04:11:12Z",
-      "notes": [
-        "[COMPLETED 2026-02-13T04:11:12Z] Created index.js with listSkills, getSkill, getSkillPath, getSkillDir, getDispatchMatrix, readSkillContent"
-      ],
-      "verification": {
-        "passed": false,
-        "round": 0,
-        "gates": {
-          "implemented": true,
-          "testsPassed": null,
-          "qaPassed": null,
-          "cleanupDone": null,
-          "securityPassed": null,
-          "documented": null
-        },
-        "lastAgent": "coder",
-        "lastUpdated": "2026-02-13T04:11:12Z",
-        "failureLog": []
-      }
+      "phase": "setup"
     },
     {
       "id": "T022",
       "title": "Create TypeScript declarations (index.d.ts)",
-      "status": "done",
+      "status": "pending",
       "priority": "medium",
       "type": "task",
       "parentId": "T012",
       "createdAt": "2026-02-13T04:10:51Z",
-      "updatedAt": "2026-02-13T04:11:13Z",
+      "updatedAt": "2026-02-13T04:10:51Z",
       "size": "medium",
       "position": 10,
       "positionVersion": 0,
-      "phase": "setup",
-      "completedAt": "2026-02-13T04:11:13Z",
-      "notes": [
-        "[COMPLETED 2026-02-13T04:11:13Z] Created index.d.ts with SkillReference, ManifestSkill, DispatchMatrix, Manifest interfaces"
-      ],
-      "verification": {
-        "passed": false,
-        "round": 0,
-        "gates": {
-          "implemented": true,
-          "testsPassed": null,
-          "qaPassed": null,
-          "cleanupDone": null,
-          "securityPassed": null,
-          "documented": null
-        },
-        "lastAgent": "coder",
-        "lastUpdated": "2026-02-13T04:11:13Z",
-        "failureLog": []
-      }
+      "phase": "setup"
     },
     {
       "id": "T023",
       "title": "Publish as npm package @cleocode/ct-skills v1.0.0",
-      "status": "done",
+      "status": "pending",
       "priority": "medium",
       "type": "task",
       "parentId": "T012",
       "createdAt": "2026-02-13T04:10:51Z",
-      "updatedAt": "2026-02-13T04:11:14Z",
+      "updatedAt": "2026-02-13T04:10:51Z",
       "size": "medium",
       "position": 11,
       "positionVersion": 0,
-      "phase": "setup",
-      "completedAt": "2026-02-13T04:11:14Z",
-      "notes": [
-        "[COMPLETED 2026-02-13T04:11:14Z] Published @cleocode/ct-skills@1.0.0 to npm"
-      ],
-      "verification": {
-        "passed": false,
-        "round": 0,
-        "gates": {
-          "implemented": true,
-          "testsPassed": null,
-          "qaPassed": null,
-          "cleanupDone": null,
-          "securityPassed": null,
-          "documented": null
-        },
-        "lastAgent": "coder",
-        "lastUpdated": "2026-02-13T04:11:15Z",
-        "failureLog": []
-      }
+      "phase": "setup"
     }
   ],
   "labels": {}

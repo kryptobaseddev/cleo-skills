@@ -49,9 +49,9 @@
     "releases": [
       {
         "version": "v2.0.0",
-        "status": "planned",
+        "status": "released",
         "targetDate": null,
-        "releasedAt": null,
+        "releasedAt": "2026-02-13T04:03:21Z",
         "createdAt": "2026-02-13T04:02:38Z",
         "tasks": [
           "T001",
@@ -66,19 +66,21 @@
           "T010",
           "T011"
         ],
-        "notes": null
+        "notes": null,
+        "gitTag": "v2.0.0",
+        "changelog": "## [2.0.0] - 2026-02-12\n\n### Other Changes\n- Epic: Evolve ct-skills into Registry/Catalog API v2.0.0 (T001)\n- Copy 12 protocol files from CLEO repo to protocols/ (T002)\n- Evolve SKILL.md frontmatter for all 17 skills (T003)\n- Update build-index.sh to extract new frontmatter fields (T004)\n- Create install profiles (minimal, core, recommended, full) (T005)\n- Evolve index.js into Registry/Catalog API (T006)\n- Update index.d.ts with full type declarations (T007)\n- Create CLI bin/ct-skills.js (T008)\n- Update package.json to v2.0.0 with bin entry (T009)\n- Create manifest generation script and dispatch-config.json (T010)\n- Update .npmignore, run builds, verify (T011)"
       }
     ]
   },
-  "lastUpdated": "2026-02-13T04:02:38Z",
+  "lastUpdated": "2026-02-13T04:11:08Z",
   "_meta": {
     "schemaVersion": "2.10.0",
-    "checksum": "1cc1355af1ace40e",
+    "checksum": "c30c000c2610e776",
     "configVersion": "2.10.0",
     "lastSessionId": null,
     "activeSession": null,
-    "generation": 23,
-    "lastModified": "2026-02-13T03:57:01Z",
+    "generation": 36,
+    "lastModified": "2026-02-13T04:10:31Z",
     "multiSessionEnabled": true,
     "activeSessionCount": 1
   },
@@ -460,6 +462,269 @@
         "lastUpdated": "2026-02-13T04:02:21Z",
         "failureLog": []
       }
+    },
+    {
+      "id": "T012",
+      "title": "Epic: Initial release @cleocode/ct-skills v1.0.0",
+      "status": "pending",
+      "priority": "medium",
+      "type": "epic",
+      "parentId": null,
+      "createdAt": "2026-02-13T04:10:36Z",
+      "updatedAt": "2026-02-13T04:10:36Z",
+      "size": "medium",
+      "position": 2,
+      "positionVersion": 0,
+      "phase": "setup"
+    },
+    {
+      "id": "T013",
+      "title": "Initialize cleo-skills repo with ct-gitbook skill",
+      "status": "done",
+      "priority": "medium",
+      "type": "task",
+      "parentId": "T012",
+      "createdAt": "2026-02-13T04:10:47Z",
+      "updatedAt": "2026-02-13T04:11:04Z",
+      "size": "medium",
+      "position": 1,
+      "positionVersion": 0,
+      "phase": "setup",
+      "completedAt": "2026-02-13T04:11:04Z",
+      "notes": [
+        "[COMPLETED 2026-02-13T04:11:04Z] Initialized repo with ct-gitbook skill"
+      ],
+      "verification": {
+        "passed": false,
+        "round": 0,
+        "gates": {
+          "implemented": true,
+          "testsPassed": null,
+          "qaPassed": null,
+          "cleanupDone": null,
+          "securityPassed": null,
+          "documented": null
+        },
+        "lastAgent": "coder",
+        "lastUpdated": "2026-02-13T04:11:04Z",
+        "failureLog": []
+      }
+    },
+    {
+      "id": "T014",
+      "title": "Add starter template assets for ct-gitbook",
+      "status": "done",
+      "priority": "medium",
+      "type": "task",
+      "parentId": "T012",
+      "createdAt": "2026-02-13T04:10:47Z",
+      "updatedAt": "2026-02-13T04:11:05Z",
+      "size": "medium",
+      "position": 2,
+      "positionVersion": 0,
+      "phase": "setup",
+      "completedAt": "2026-02-13T04:11:05Z",
+      "notes": [
+        "[COMPLETED 2026-02-13T04:11:05Z] Added starter template assets"
+      ],
+      "verification": {
+        "passed": false,
+        "round": 0,
+        "gates": {
+          "implemented": true,
+          "testsPassed": null,
+          "qaPassed": null,
+          "cleanupDone": null,
+          "securityPassed": null,
+          "documented": null
+        },
+        "lastAgent": "coder",
+        "lastUpdated": "2026-02-13T04:11:05Z",
+        "failureLog": []
+      }
+    },
+    {
+      "id": "T015",
+      "title": "Add 15 skills across 4 tiers (orchestration, planning, execution, specialized)",
+      "status": "done",
+      "priority": "medium",
+      "type": "task",
+      "parentId": "T012",
+      "createdAt": "2026-02-13T04:10:48Z",
+      "updatedAt": "2026-02-13T04:11:06Z",
+      "size": "medium",
+      "position": 3,
+      "positionVersion": 0,
+      "phase": "setup",
+      "completedAt": "2026-02-13T04:11:06Z",
+      "notes": [
+        "[COMPLETED 2026-02-13T04:11:06Z] Added 15 skills: ct-orchestrator, ct-epic-architect, ct-task-executor, ct-research-agent, ct-spec-writer, ct-validator, ct-dev-workflow, ct-test-writer-bats, ct-library-implementer-bash, ct-documentor, ct-docs-lookup, ct-docs-write, ct-docs-review, ct-skill-creator, ct-skill-lookup"
+      ],
+      "verification": {
+        "passed": false,
+        "round": 0,
+        "gates": {
+          "implemented": true,
+          "testsPassed": null,
+          "qaPassed": null,
+          "cleanupDone": null,
+          "securityPassed": null,
+          "documented": null
+        },
+        "lastAgent": "coder",
+        "lastUpdated": "2026-02-13T04:11:06Z",
+        "failureLog": []
+      }
+    },
+    {
+      "id": "T016",
+      "title": "Create _shared/ protocol infrastructure (subagent-protocol-base, task-system-integration, style guide, placeholders)",
+      "status": "done",
+      "priority": "medium",
+      "type": "task",
+      "parentId": "T012",
+      "createdAt": "2026-02-13T04:10:48Z",
+      "updatedAt": "2026-02-13T04:11:07Z",
+      "size": "medium",
+      "position": 4,
+      "positionVersion": 0,
+      "phase": "setup",
+      "completedAt": "2026-02-13T04:11:07Z",
+      "notes": [
+        "[COMPLETED 2026-02-13T04:11:07Z] Created subagent-protocol-base.md, task-system-integration.md, testing-framework-config.md, cleo-style-guide.md, placeholders.json"
+      ],
+      "verification": {
+        "passed": false,
+        "round": 0,
+        "gates": {
+          "implemented": true,
+          "testsPassed": null,
+          "qaPassed": null,
+          "cleanupDone": null,
+          "securityPassed": null,
+          "documented": null
+        },
+        "lastAgent": "coder",
+        "lastUpdated": "2026-02-13T04:11:07Z",
+        "failureLog": []
+      }
+    },
+    {
+      "id": "T017",
+      "title": "Document CLEO ecosystem architecture, _shared/, and dual manifests",
+      "status": "done",
+      "priority": "medium",
+      "type": "task",
+      "parentId": "T012",
+      "createdAt": "2026-02-13T04:10:49Z",
+      "updatedAt": "2026-02-13T04:11:08Z",
+      "size": "medium",
+      "position": 5,
+      "positionVersion": 0,
+      "phase": "setup",
+      "completedAt": "2026-02-13T04:11:08Z",
+      "notes": [
+        "[COMPLETED 2026-02-13T04:11:08Z] Documented ecosystem architecture in CLAUDE.md and docs/SKILL-SPECIFICATION.md"
+      ],
+      "verification": {
+        "passed": false,
+        "round": 0,
+        "gates": {
+          "implemented": true,
+          "testsPassed": null,
+          "qaPassed": null,
+          "cleanupDone": null,
+          "securityPassed": null,
+          "documented": null
+        },
+        "lastAgent": "coder",
+        "lastUpdated": "2026-02-13T04:11:08Z",
+        "failureLog": []
+      }
+    },
+    {
+      "id": "T018",
+      "title": "Extract ct-orchestrator content into progressive disclosure references",
+      "status": "pending",
+      "priority": "medium",
+      "type": "task",
+      "parentId": "T012",
+      "createdAt": "2026-02-13T04:10:49Z",
+      "updatedAt": "2026-02-13T04:10:49Z",
+      "size": "medium",
+      "position": 6,
+      "positionVersion": 0,
+      "phase": "setup"
+    },
+    {
+      "id": "T019",
+      "title": "Create build-index.sh to validate skills and generate skills.json",
+      "status": "pending",
+      "priority": "medium",
+      "type": "task",
+      "parentId": "T012",
+      "createdAt": "2026-02-13T04:10:50Z",
+      "updatedAt": "2026-02-13T04:10:50Z",
+      "size": "medium",
+      "position": 7,
+      "positionVersion": 0,
+      "phase": "setup"
+    },
+    {
+      "id": "T020",
+      "title": "Create manifest.json dispatch registry for CLEO orchestrator",
+      "status": "pending",
+      "priority": "medium",
+      "type": "task",
+      "parentId": "T012",
+      "createdAt": "2026-02-13T04:10:50Z",
+      "updatedAt": "2026-02-13T04:10:50Z",
+      "size": "medium",
+      "position": 8,
+      "positionVersion": 0,
+      "phase": "setup"
+    },
+    {
+      "id": "T021",
+      "title": "Create Node.js API (index.js) with listSkills, getSkill, getSkillPath, getDispatchMatrix, readSkillContent",
+      "status": "pending",
+      "priority": "medium",
+      "type": "task",
+      "parentId": "T012",
+      "createdAt": "2026-02-13T04:10:51Z",
+      "updatedAt": "2026-02-13T04:10:51Z",
+      "size": "medium",
+      "position": 9,
+      "positionVersion": 0,
+      "phase": "setup"
+    },
+    {
+      "id": "T022",
+      "title": "Create TypeScript declarations (index.d.ts)",
+      "status": "pending",
+      "priority": "medium",
+      "type": "task",
+      "parentId": "T012",
+      "createdAt": "2026-02-13T04:10:51Z",
+      "updatedAt": "2026-02-13T04:10:51Z",
+      "size": "medium",
+      "position": 10,
+      "positionVersion": 0,
+      "phase": "setup"
+    },
+    {
+      "id": "T023",
+      "title": "Publish as npm package @cleocode/ct-skills v1.0.0",
+      "status": "pending",
+      "priority": "medium",
+      "type": "task",
+      "parentId": "T012",
+      "createdAt": "2026-02-13T04:10:51Z",
+      "updatedAt": "2026-02-13T04:10:51Z",
+      "size": "medium",
+      "position": 11,
+      "positionVersion": 0,
+      "phase": "setup"
     }
   ],
   "labels": {}
