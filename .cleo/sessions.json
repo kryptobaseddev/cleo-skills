@@ -5,8 +5,8 @@
   "_meta": {
     "schemaVersion": "1.0.0",
     "checksum": "",
-    "lastModified": "2026-02-13T04:03:33Z",
-    "totalSessionsCreated": 1
+    "lastModified": "2026-02-13T04:10:31Z",
+    "totalSessionsCreated": 2
   },
   "config": {
     "maxConcurrentSessions": 5,
@@ -78,6 +78,52 @@
         "max_tokens": 200000
       },
       "endedAt": "2026-02-13T04:03:33Z"
+    },
+    {
+      "id": "session_20260212_201031_ae4e83",
+      "status": "active",
+      "name": "changelog-fix",
+      "agentId": null,
+      "scope": {
+        "type": "epic",
+        "rootTaskId": "T001",
+        "computedTaskIds": [
+          "T001",
+          "T002",
+          "T003",
+          "T004",
+          "T005",
+          "T006",
+          "T007",
+          "T008",
+          "T009",
+          "T010",
+          "T011"
+        ]
+      },
+      "focus": {
+        "currentTask": null,
+        "currentPhase": null,
+        "previousTask": null,
+        "sessionNote": null,
+        "nextAction": null,
+        "focusHistory": []
+      },
+      "startedAt": "2026-02-13T04:10:31Z",
+      "lastActivity": "2026-02-13T04:10:31Z",
+      "suspendedAt": null,
+      "stats": {
+        "tasksCompleted": 0,
+        "focusChanges": 0,
+        "suspendCount": 0,
+        "resumeCount": 0
+      },
+      "startMetrics": {
+        "session_id": "session_20260212_201031_ae4e83",
+        "start_timestamp": "2026-02-13T04:10:31Z",
+        "start_tokens": 0,
+        "max_tokens": 200000
+      }
     }
   ],
   "sessionHistory": []
