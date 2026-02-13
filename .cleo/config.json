@@ -6,7 +6,6 @@
     "createdAt": "2026-02-12T21:32:07Z",
     "updatedAt": "2026-02-12T21:32:07Z"
   },
-
   "archive": {
     "enabled": true,
     "daysUntilArchive": 7,
@@ -15,14 +14,12 @@
     "archiveOnSessionEnd": true,
     "autoArchiveOnComplete": false
   },
-
   "logging": {
     "enabled": true,
     "retentionDays": 30,
     "level": "standard",
     "logSessionEvents": true
   },
-
   "validation": {
     "strictMode": false,
     "checksumEnabled": true,
@@ -32,13 +29,11 @@
     "validateDependencies": true,
     "detectCircularDeps": true
   },
-
   "defaults": {
     "priority": "medium",
     "phase": "core",
     "labels": []
   },
-
   "session": {
     "requireSession": true,
     "requireSessionNote": true,
@@ -50,16 +45,14 @@
     "autoDiscoveryOnStart": true,
     "sessionTimeoutHours": 72
   },
-
   "multiSession": {
-    "enabled": true,
+    "enabled": false,
     "maxConcurrentSessions": 5,
     "maxActiveTasksPerScope": 1,
     "scopeValidation": "strict",
     "allowNestedScopes": true,
     "allowScopeOverlap": false
   },
-
   "release": {
     "gates": [],
     "changelog": {
@@ -69,13 +62,11 @@
       "outputs": []
     }
   },
-
   "display": {
     "showArchiveCount": true,
     "showLogSummary": true,
     "warnStaleDays": 30
   },
-
   "output": {
     "defaultFormat": "text",
     "showColor": true,
@@ -86,7 +77,6 @@
     "showCompactTitles": false,
     "maxTitleLength": 80
   },
-
   "cli": {
     "aliases": {
       "ls": "list",
@@ -98,7 +88,10 @@
     },
     "plugins": {
       "enabled": true,
-      "directories": ["~/.cleo/plugins", "./.cleo/plugins"],
+      "directories": [
+        "~/.cleo/plugins",
+        "./.cleo/plugins"
+      ],
       "autoDiscover": true
     },
     "debug": {
@@ -108,7 +101,6 @@
       "showTimings": false
     }
   },
-
   "backup": {
     "enabled": true,
     "directory": ".cleo/backups",
@@ -118,7 +110,6 @@
     "maxArchiveBackups": 3,
     "safetyRetentionDays": 7
   },
-
   "cancellation": {
     "cascadeConfirmThreshold": 10,
     "requireReason": true,
@@ -126,14 +117,17 @@
     "allowCascade": true,
     "defaultChildStrategy": "block"
   },
-
   "contextAlerts": {
     "enabled": true,
     "minThreshold": "warning",
-    "triggerCommands": ["complete", "focus", "add", "session"],
+    "triggerCommands": [
+      "complete",
+      "focus",
+      "add",
+      "session"
+    ],
     "suppressDuration": 0
   },
-
   "orchestrator": {
     "contextThresholds": {
       "warning": 70,
@@ -142,14 +136,12 @@
     "autoStopOnCritical": true,
     "hitlSummaryOnPause": true
   },
-
   "agentOutputs": {
     "directory": "claudedocs/agent-outputs",
     "manifestFile": "MANIFEST.jsonl",
     "archiveDir": "archive",
     "archiveDays": 30
   },
-
   "retention": {
     "maxArchivedSessions": 100,
     "autoArchiveEndedAfterDays": 30,
@@ -160,7 +152,6 @@
     "maxSessionsInMemory": 100,
     "autoEndActiveAfterDays": 7
   },
-
   "project": {
     "status": {
       "health": "unknown",
