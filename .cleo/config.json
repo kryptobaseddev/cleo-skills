@@ -46,7 +46,7 @@
     "sessionTimeoutHours": 72
   },
   "multiSession": {
-    "enabled": false,
+    "enabled": true,
     "maxConcurrentSessions": 5,
     "maxActiveTasksPerScope": 1,
     "scopeValidation": "strict",
