@@ -10,9 +10,19 @@ description: >-
   automating GitBook documentation sites, configuring Git Sync, working
   with the GitBook API, setting up authentication, or migrating
   documentation to GitBook.
-metadata:
-  author: cleo-skills
-  version: "1.0.0"
+version: 1.0.0
+tier: 3
+core: false
+category: meta
+protocol: null
+dependencies: []
+sharedResources: []
+compatibility:
+  - claude-code
+  - cursor
+  - windsurf
+  - gemini-cli
+license: MIT
 ---
 
 # GitBook Platform Guide

@@ -8,6 +8,19 @@ description: |
   the main context window. Enforces ORC-001 through ORC-008 constraints.
 version: 2.1.0
 tier: 0
+core: true
+category: core
+protocol: agent-protocol
+dependencies: []
+sharedResources:
+  - subagent-protocol-base
+  - task-system-integration
+compatibility:
+  - claude-code
+  - cursor
+  - windsurf
+  - gemini-cli
+license: MIT
 ---
 
 # Orchestrator Protocol

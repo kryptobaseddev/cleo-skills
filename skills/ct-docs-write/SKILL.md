@@ -2,6 +2,18 @@
 name: ct-docs-write
 description: This skill should be used when creating, editing, or reviewing documentation files (markdown, MDX, README, guides). Use when the user asks to "write docs", "create documentation", "edit the README", "improve doc clarity", "make docs more readable", "follow the style guide", or "write user-facing content". Applies CLEO's conversational, clear, and user-focused writing style.
 version: 1.0.0
+tier: 3
+core: false
+category: composition
+protocol: null
+dependencies: []
+sharedResources: []
+compatibility:
+  - claude-code
+  - cursor
+  - windsurf
+  - gemini-cli
+license: MIT
 ---
 
 # Documentation Writing Skill

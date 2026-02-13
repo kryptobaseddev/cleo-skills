@@ -1,12 +1,25 @@
 ---
-name: ct-contribution-protocol
-description: |
+name: ct-contribution
+description: >-
   Guided workflow for multi-agent consensus contributions.
   Use when user says "/contribution", "contribution protocol", "submit contribution",
   "consensus workflow", "multi-agent decision", "create contribution",
   "contribution start", "contribution submit", "detect conflicts",
   "weighted consensus", "decision tracking", "conflict resolution".
 version: 1.0.0
+tier: 3
+core: false
+category: meta
+protocol: contribution
+dependencies: []
+sharedResources:
+  - subagent-protocol-base
+compatibility:
+  - claude-code
+  - cursor
+  - windsurf
+  - gemini-cli
+license: MIT
 ---
 
 # Contribution Protocol Skill

@@ -2,6 +2,18 @@
 name: ct-skill-lookup
 description: This skill should be used when the user asks to "find me a skill", "search for skills", "what skills are available", "get skill XYZ", "install a skill", "extend Claude's capabilities with skills", or mentions Agent Skills, prompts.chat, SkillsMP, marketplace, external skills, or reusable AI agent components.
 version: 1.1.0
+tier: 3
+core: false
+category: meta
+protocol: null
+dependencies: []
+sharedResources: []
+compatibility:
+  - claude-code
+  - cursor
+  - windsurf
+  - gemini-cli
+license: MIT
 ---
 
 When the user needs Agent Skills, wants to extend Claude's capabilities, or is looking for reusable AI agent components, you have two sources available:

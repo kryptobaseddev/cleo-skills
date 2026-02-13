@@ -1,6 +1,24 @@
 ---
 name: ct-documentor
 description: Documentation creation, editing, and review with CLEO style guide compliance. Coordinates specialized skills for lookup, writing, and review. Use when creating or updating documentation files, consolidating scattered documentation, or validating documentation against style standards. Triggers on documentation tasks, doc update requests, or style guide compliance checks.
+version: 3.0.0
+tier: 3
+core: false
+category: specialist
+protocol: null
+dependencies:
+  - ct-docs-lookup
+  - ct-docs-write
+  - ct-docs-review
+sharedResources:
+  - subagent-protocol-base
+  - task-system-integration
+compatibility:
+  - claude-code
+  - cursor
+  - windsurf
+  - gemini-cli
+license: MIT
 ---
 
 # Documentation Specialist Context Injection

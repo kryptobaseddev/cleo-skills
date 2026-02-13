@@ -1,6 +1,21 @@
 ---
 name: ct-test-writer-bats
 description: BATS (Bash Automated Testing System) test creation for comprehensive integration and unit testing. Creates idempotent tests with happy path, error handling, and edge case coverage. Includes fixture creation and JSON output validation. Use when writing tests, creating test suites, adding test coverage, or validating bash implementations. Triggers on test writing tasks, test coverage needs, or BATS test creation.
+version: 2.0.0
+tier: 2
+core: false
+category: specialist
+protocol: testing
+dependencies: []
+sharedResources:
+  - subagent-protocol-base
+  - task-system-integration
+compatibility:
+  - claude-code
+  - cursor
+  - windsurf
+  - gemini-cli
+license: MIT
 ---
 
 # Test Writer (BATS) Context Injection
