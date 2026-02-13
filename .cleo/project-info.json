@@ -1,0 +1,52 @@
+{
+  "$schema": "./schemas/project-info.schema.json",
+  "schemaVersion": "1.0.0",
+  "projectHash": "991f1b6d77b2",
+  "name": "cleo-skills",
+  "registeredAt": "2026-02-12T21:32:07Z",
+  "lastUpdated": "2026-02-12T21:32:15Z",
+  "cleoVersion": "0.93.4",
+  "schemas": {
+    "todo": {
+      "version": "2.10.0",
+      "lastMigrated": "2026-02-12T21:32:15Z"
+    },
+    "config": {
+      "version": "2.10.0",
+      "lastMigrated": "2026-02-12T21:32:15Z"
+    },
+    "archive": {
+      "version": "2.4.0",
+      "lastMigrated": "2026-02-12T21:32:15Z"
+    },
+    "log": {
+      "version": "2.4.0",
+      "lastMigrated": "2026-02-12T21:32:15Z"
+    }
+  },
+  "injection": {
+    "CLAUDE.md": {
+      "status": "current",
+      "lastUpdated": "2026-02-12T21:32:15Z"
+    },
+    "AGENTS.md": {
+      "status": "current",
+      "lastUpdated": "2026-02-12T21:32:15Z"
+    },
+    "GEMINI.md": {
+      "status": "current",
+      "lastUpdated": "2026-02-12T21:32:15Z"
+    }
+  },
+  "health": {
+    "status": "healthy",
+    "lastCheck": "2026-02-12T21:32:15Z",
+    "issues": [],
+    "history": []
+  },
+  "features": {
+    "multiSession": true,
+    "verification": false,
+    "contextAlerts": true
+  }
+}

@@ -1,0 +1,268 @@
+{
+  "$schema": "./schemas/todo.schema.json",
+  "version": "2.10.0",
+  "project": {
+    "name": "cleo-skills",
+    "currentPhase": "setup",
+    "phases": {
+      "setup": {
+        "order": 1,
+        "name": "Setup & Foundation",
+        "description": "Initial project setup, dependencies, and configuration",
+        "status": "active",
+        "startedAt": "2026-02-12T21:32:07Z",
+        "completedAt": null
+      },
+      "core": {
+        "order": 2,
+        "name": "Core Development",
+        "description": "Build core functionality and features",
+        "status": "pending",
+        "startedAt": null,
+        "completedAt": null
+      },
+      "testing": {
+        "order": 3,
+        "name": "Testing & Validation",
+        "description": "Comprehensive testing, validation, and quality assurance",
+        "status": "pending",
+        "startedAt": null,
+        "completedAt": null
+      },
+      "polish": {
+        "order": 4,
+        "name": "Polish & Refinement",
+        "description": "UX improvements, optimization, and release preparation",
+        "status": "pending",
+        "startedAt": null,
+        "completedAt": null
+      },
+      "maintenance": {
+        "order": 5,
+        "name": "Maintenance",
+        "description": "Bug fixes, updates, and ongoing support",
+        "status": "pending",
+        "startedAt": null,
+        "completedAt": null
+      }
+    }
+  },
+  "lastUpdated": "2026-02-13T03:57:06Z",
+  "_meta": {
+    "schemaVersion": "2.10.0",
+    "checksum": "48c9f2b965834720",
+    "configVersion": "2.10.0",
+    "lastSessionId": null,
+    "activeSession": null,
+    "generation": 2,
+    "lastModified": "2026-02-13T03:57:01Z",
+    "multiSessionEnabled": true,
+    "activeSessionCount": 1
+  },
+  "focus": {
+    "currentTask": "T002",
+    "currentPhase": "setup",
+    "blockedUntil": null,
+    "sessionNote": null,
+    "nextAction": null
+  },
+  "tasks": [
+    {
+      "id": "T001",
+      "title": "Epic: Evolve ct-skills into Registry/Catalog API v2.0.0",
+      "status": "pending",
+      "priority": "medium",
+      "type": "epic",
+      "parentId": null,
+      "createdAt": "2026-02-13T03:54:50Z",
+      "updatedAt": "2026-02-13T03:54:50Z",
+      "size": "medium",
+      "position": 1,
+      "positionVersion": 0,
+      "phase": "setup"
+    },
+    {
+      "id": "T002",
+      "title": "Copy 12 protocol files from CLEO repo to protocols/",
+      "status": "active",
+      "priority": "medium",
+      "type": "task",
+      "parentId": "T001",
+      "createdAt": "2026-02-13T03:55:08Z",
+      "updatedAt": "2026-02-13T03:57:01Z",
+      "size": "medium",
+      "position": 1,
+      "positionVersion": 0,
+      "phase": "setup"
+    },
+    {
+      "id": "T003",
+      "title": "Evolve SKILL.md frontmatter for all 17 skills",
+      "status": "pending",
+      "priority": "medium",
+      "type": "task",
+      "parentId": "T001",
+      "createdAt": "2026-02-13T03:55:08Z",
+      "updatedAt": "2026-02-13T03:55:08Z",
+      "size": "medium",
+      "position": 2,
+      "positionVersion": 0,
+      "phase": "setup"
+    },
+    {
+      "id": "T004",
+      "title": "Update build-index.sh to extract new frontmatter fields",
+      "status": "pending",
+      "priority": "medium",
+      "type": "task",
+      "parentId": "T001",
+      "createdAt": "2026-02-13T03:55:09Z",
+      "updatedAt": "2026-02-13T03:57:00Z",
+      "size": "medium",
+      "position": 3,
+      "positionVersion": 0,
+      "phase": "setup",
+      "depends": [
+        "T003"
+      ]
+    },
+    {
+      "id": "T005",
+      "title": "Create install profiles (minimal, core, recommended, full)",
+      "status": "done",
+      "priority": "medium",
+      "type": "task",
+      "parentId": "T001",
+      "createdAt": "2026-02-13T03:55:09Z",
+      "updatedAt": "2026-02-13T03:57:06Z",
+      "size": "medium",
+      "position": 4,
+      "positionVersion": 0,
+      "phase": "setup",
+      "completedAt": "2026-02-13T03:57:06Z",
+      "notes": [
+        "[COMPLETED 2026-02-13T03:57:06Z] Created 4 install profiles: minimal.json, core.json, recommended.json, full.json in profiles/ directory. Each profile defines skill sets and protocol includes with inheritance via extends."
+      ],
+      "verification": {
+        "passed": false,
+        "round": 0,
+        "gates": {
+          "implemented": true,
+          "testsPassed": null,
+          "qaPassed": null,
+          "cleanupDone": null,
+          "securityPassed": null,
+          "documented": null
+        },
+        "lastAgent": "coder",
+        "lastUpdated": "2026-02-13T03:57:06Z",
+        "failureLog": []
+      }
+    },
+    {
+      "id": "T006",
+      "title": "Evolve index.js into Registry/Catalog API",
+      "status": "pending",
+      "priority": "medium",
+      "type": "task",
+      "parentId": "T001",
+      "createdAt": "2026-02-13T03:55:10Z",
+      "updatedAt": "2026-02-13T03:55:10Z",
+      "size": "medium",
+      "position": 5,
+      "positionVersion": 0,
+      "phase": "setup",
+      "depends": [
+        "T003",
+        "T005"
+      ]
+    },
+    {
+      "id": "T007",
+      "title": "Update index.d.ts with full type declarations",
+      "status": "pending",
+      "priority": "medium",
+      "type": "task",
+      "parentId": "T001",
+      "createdAt": "2026-02-13T03:55:10Z",
+      "updatedAt": "2026-02-13T03:55:10Z",
+      "size": "medium",
+      "position": 6,
+      "positionVersion": 0,
+      "phase": "setup",
+      "depends": [
+        "T006"
+      ]
+    },
+    {
+      "id": "T008",
+      "title": "Create CLI bin/ct-skills.js",
+      "status": "pending",
+      "priority": "medium",
+      "type": "task",
+      "parentId": "T001",
+      "createdAt": "2026-02-13T03:55:11Z",
+      "updatedAt": "2026-02-13T03:55:11Z",
+      "size": "medium",
+      "position": 7,
+      "positionVersion": 0,
+      "phase": "setup",
+      "depends": [
+        "T006"
+      ]
+    },
+    {
+      "id": "T009",
+      "title": "Update package.json to v2.0.0 with bin entry",
+      "status": "pending",
+      "priority": "medium",
+      "type": "task",
+      "parentId": "T001",
+      "createdAt": "2026-02-13T03:55:17Z",
+      "updatedAt": "2026-02-13T03:55:17Z",
+      "size": "medium",
+      "position": 8,
+      "positionVersion": 0,
+      "phase": "setup",
+      "depends": [
+        "T008"
+      ]
+    },
+    {
+      "id": "T010",
+      "title": "Create manifest generation script and dispatch-config.json",
+      "status": "pending",
+      "priority": "medium",
+      "type": "task",
+      "parentId": "T001",
+      "createdAt": "2026-02-13T03:55:18Z",
+      "updatedAt": "2026-02-13T03:55:18Z",
+      "size": "medium",
+      "position": 9,
+      "positionVersion": 0,
+      "phase": "setup",
+      "depends": [
+        "T003"
+      ]
+    },
+    {
+      "id": "T011",
+      "title": "Update .npmignore, run builds, verify",
+      "status": "pending",
+      "priority": "medium",
+      "type": "task",
+      "parentId": "T001",
+      "createdAt": "2026-02-13T03:55:18Z",
+      "updatedAt": "2026-02-13T03:55:18Z",
+      "size": "medium",
+      "position": 10,
+      "positionVersion": 0,
+      "phase": "setup",
+      "depends": [
+        "T009",
+        "T010"
+      ]
+    }
+  ],
+  "labels": {}
+}
