@@ -740,23 +740,557 @@ Run `cleo focus set T1234` before starting work.
 When done, run `cleo complete T1234`.
 ```
 
-### Creating New Shared Resources
+### Creating New Shared Resources: Complete Walkthrough
 
-If you need a new shared resource:
+This walkthrough creates a new shared resource from scratch and shows how multiple skills consume it to eliminate duplication.
 
-1. Create the file in `skills/_shared/` (e.g., `security-checklist.md`)
-2. Add it to `sharedResources` in relevant SKILL.md frontmatter
-3. The orchestrator will automatically include it in the protocol stack
+**Scenario**: Three skills (`ct-task-executor`, `ct-library-implementer-bash`, `ct-test-writer-bats`) all need the same code quality checklist before completing work. Without a shared resource, each SKILL.md would duplicate the checklist.
+
+#### Step 1: Identify the Duplicated Content
+
+Here is the content that would be duplicated across three skills without `_shared/`:
+
+```markdown
+## Code Quality Checklist
+
+Before completing work, verify all items pass:
+
+### Required Checks
+- [ ] All changed files have consistent formatting
+- [ ] No hardcoded secrets, API keys, or credentials
+- [ ] Error handling covers all failure paths
+- [ ] Public functions have descriptive names and parameter types
+
+### Conditional Checks
+- [ ] If adding dependencies: justified and version-pinned
+- [ ] If modifying APIs: backwards-compatible or migration documented
+- [ ] If touching security-sensitive code: input validation present
+
+### Completion Gate
+All "Required Checks" MUST pass. Conditional checks apply only when relevant.
+If any required check fails, set manifest `"status": "partial"` with details
+in `needs_followup`.
+```
+
+This is ~20 lines of content. Duplicated across 3 skills = 60 lines. Duplicated across 10 execution skills = 200 lines. Changes require updating every copy.
+
+#### Step 2: Create the Shared Resource File
+
+Write the content to `skills/_shared/code-quality-checklist.md`:
+
+```markdown
+# Code Quality Checklist
+
+**Injected by**: CLEO orchestrator at spawn time
+**Consumed by**: Execution-tier skills via `sharedResources` frontmatter
+
+---
+
+Before completing work, verify all items pass:
+
+## Required Checks
+
+| Check | Description |
+|-------|-------------|
+| Formatting | All changed files have consistent formatting |
+| No secrets | No hardcoded secrets, API keys, or credentials |
+| Error handling | Error handling covers all failure paths |
+| Naming | Public functions have descriptive names and parameter types |
+
+## Conditional Checks
+
+| Condition | Check |
+|-----------|-------|
+| Adding dependencies | Justified and version-pinned |
+| Modifying APIs | Backwards-compatible or migration documented |
+| Security-sensitive code | Input validation present |
+
+## Completion Gate
+
+All "Required Checks" MUST pass (RFC 2119). Conditional checks apply only
+when the condition is met.
+
+**If any required check fails:**
+1. Set manifest `"status": "partial"`
+2. Add failing checks to `needs_followup` array
+3. Document what needs to be fixed
+```
+
+This file is the **single source of truth** for code quality standards. It's defined once, lives in `_shared/`, and gets injected into any skill that declares it.
+
+#### Step 3: Declare the Dependency in SKILL.md Frontmatter
+
+Each skill that needs the checklist adds it to `sharedResources`:
 
 ```yaml
-# skills/ct-security-auditor/SKILL.md
+# skills/ct-task-executor/SKILL.md
 ---
-name: ct-security-auditor
+name: ct-task-executor
+version: 2.0.0
+tier: 2
+core: true
+category: core
+protocol: implementation
 sharedResources:
   - subagent-protocol-base
   - task-system-integration
-  - security-checklist          # ← New shared resource
+  - code-quality-checklist      # ← NEW: shared quality gate
 ---
+```
+
+```yaml
+# skills/ct-library-implementer-bash/SKILL.md
+---
+name: ct-library-implementer-bash
+version: 2.0.0
+tier: 2
+sharedResources:
+  - subagent-protocol-base
+  - task-system-integration
+  - code-quality-checklist      # ← Same shared resource, zero duplication
+---
+```
+
+```yaml
+# skills/ct-test-writer-bats/SKILL.md
+---
+name: ct-test-writer-bats
+version: 2.0.0
+tier: 2
+sharedResources:
+  - subagent-protocol-base
+  - task-system-integration
+  - code-quality-checklist      # ← Same shared resource
+---
+```
+
+#### Step 4: How CLEO Injects the Shared Resource
+
+When the orchestrator spawns `ct-task-executor`, it reads the `sharedResources` array and builds this protocol stack:
+
+```
+Injected into subagent context (top to bottom):
+┌──────────────────────────────────────────────────┐
+│ SKILL.md body                                     │  ← "How to execute tasks"
+│ (ct-task-executor-specific instructions)          │
+├──────────────────────────────────────────────────┤
+│ protocols/implementation.md                       │  ← "Implementation rules"
+│ (from `protocol: implementation`)                │
+├──────────────────────────────────────────────────┤
+│ _shared/subagent-protocol-base.md                │  ← "Output format, manifest"
+│ (OUT-001 through OUT-004, lifecycle phases)       │
+├──────────────────────────────────────────────────┤
+│ _shared/task-system-integration.md               │  ← "Task commands"
+│ ({{TASK_FOCUS_CMD}}, {{TASK_COMPLETE_CMD}})       │
+├──────────────────────────────────────────────────┤
+│ _shared/code-quality-checklist.md                │  ← "Quality gate"
+│ (Required checks, conditional checks, gate)      │  ← YOUR NEW RESOURCE
+└──────────────────────────────────────────────────┘
+```
+
+The skill's SKILL.md body never mentions the checklist content — it's injected beneath. The subagent sees the full stack as a single context.
+
+#### Step 5: The DRY Result
+
+| Metric | Without `_shared/` | With `_shared/` |
+|--------|-------------------|-----------------|
+| Checklist definitions | 3 copies (one per skill) | 1 copy (`_shared/code-quality-checklist.md`) |
+| Lines of content | ~60 (20 × 3) | ~20 (single file) |
+| Update effort | Edit 3 files | Edit 1 file |
+| Consistency risk | High (copies can drift) | None (single source) |
+| Token overhead | 3× per spawn | 1× per spawn |
+
+When you later update the quality checklist (e.g., adding a new required check), you edit `_shared/code-quality-checklist.md` once. Every skill that declares it in `sharedResources` gets the updated version at their next spawn.
+
+#### Guidelines for New Shared Resources
+
+| Decision | Guidance |
+|----------|----------|
+| **When to create one** | Content is duplicated across 2+ skills and should stay synchronized |
+| **Where to put it** | `skills/_shared/<descriptive-name>.md` |
+| **How to name it** | Lowercase hyphenated, describes the content (e.g., `code-quality-checklist`, `api-design-standards`) |
+| **Format** | Markdown with clear headings. Include a header noting it's an injected resource. |
+| **Size** | Keep under 2000 tokens. Shared resources count against each skill's token budget. |
+| **Testing** | Run `bash scripts/build-index.sh` to verify `sharedResources` references don't break validation |
+
+---
+
+## Context Injection: How SKILL.md Becomes a Subagent Spawn
+
+This section walks through the complete lifecycle of a SKILL.md file — from raw template with `{{TOKEN}}` placeholders to fully resolved context injected into a running subagent.
+
+### The Raw SKILL.md (What Developers Write)
+
+Here is a simplified SKILL.md as it exists on disk. Notice the `{{TOKEN}}` placeholders — these are NOT literal values:
+
+```yaml
+---
+name: ct-research-agent
+version: 2.0.0
+tier: 2
+protocol: research
+sharedResources:
+  - subagent-protocol-base
+  - task-system-integration
+---
+```
+
+```markdown
+# Research Context Injection
+
+**Protocol**: @protocols/research.md
+
+## Parameters (Orchestrator-Provided)
+
+| Parameter | Description |
+|-----------|-------------|
+| `{{TOPIC}}` | Research subject |
+| `{{RESEARCH_QUESTIONS}}` | Questions to answer |
+| `{{TASK_ID}}` | Current task identifier |
+| `{{DATE}}` | Current date (YYYY-MM-DD) |
+
+## Execution Sequence
+
+1. Read task: `{{TASK_SHOW_CMD}} {{TASK_ID}}`
+2. Set focus: `{{TASK_FOCUS_CMD}} {{TASK_ID}}`
+3. Conduct research on {{TOPIC}}
+4. Write output: `{{OUTPUT_DIR}}/{{DATE}}_{{TOPIC_SLUG}}.md`
+5. Complete: `{{TASK_COMPLETE_CMD}} {{TASK_ID}}`
+
+## Output File
+
+Write findings to `{{OUTPUT_DIR}}/{{DATE}}_{{TOPIC_SLUG}}.md`:
+
+# {{RESEARCH_TITLE}}
+
+## Summary
+[2-3 sentence overview]
+
+## Linked Tasks
+- Epic: {{EPIC_ID}}
+- Task: {{TASK_ID}}
+```
+
+### What the Orchestrator Does (Token Resolution)
+
+When the orchestrator spawns this skill for task T2500 (researching "WebSocket authentication"), it resolves **every** `{{TOKEN}}` placeholder to a concrete value:
+
+```
+Token Resolution Map (for this specific spawn):
+┌─────────────────────────┬─────────────────────────────────────────┐
+│ Token                   │ Resolved Value                          │
+├─────────────────────────┼─────────────────────────────────────────┤
+│ {{TASK_ID}}             │ T2500                                   │
+│ {{EPIC_ID}}             │ T2490                                   │
+│ {{DATE}}                │ 2026-02-12                              │
+│ {{TOPIC}}               │ WebSocket authentication patterns       │
+│ {{TOPIC_SLUG}}          │ websocket-auth-patterns                 │
+│ {{RESEARCH_TITLE}}      │ WebSocket Authentication Research       │
+│ {{RESEARCH_QUESTIONS}}  │ 1. How to authenticate WS connections?  │
+│                         │ 2. Token vs session-based auth?         │
+│ {{OUTPUT_DIR}}          │ claudedocs/agent-outputs                │
+│ {{MANIFEST_PATH}}       │ claudedocs/agent-outputs/MANIFEST.jsonl │
+│ {{TASK_SHOW_CMD}}       │ cleo show                               │
+│ {{TASK_FOCUS_CMD}}      │ cleo focus set                          │
+│ {{TASK_COMPLETE_CMD}}   │ cleo complete                           │
+│ {{TOPICS_JSON}}         │ ["websocket","authentication","security"]│
+└─────────────────────────┴─────────────────────────────────────────┘
+```
+
+### What the Subagent Receives (Fully Resolved Context)
+
+After token resolution, the orchestrator assembles the protocol stack and injects it as the subagent's context. Here is exactly what the subagent sees:
+
+```markdown
+# Research Context Injection
+
+**Protocol**: [research protocol content injected inline]
+
+## Parameters (Orchestrator-Provided)
+
+| Parameter | Description |
+|-----------|-------------|
+| `WebSocket authentication patterns` | Research subject |
+| `1. How to authenticate WS connections? 2. Token vs session-based auth?` | Questions to answer |
+| `T2500` | Current task identifier |
+| `2026-02-12` | Current date (YYYY-MM-DD) |
+
+## Execution Sequence
+
+1. Read task: `cleo show T2500`
+2. Set focus: `cleo focus set T2500`
+3. Conduct research on WebSocket authentication patterns
+4. Write output: `claudedocs/agent-outputs/2026-02-12_websocket-auth-patterns.md`
+5. Complete: `cleo complete T2500`
+
+## Output File
+
+Write findings to `claudedocs/agent-outputs/2026-02-12_websocket-auth-patterns.md`:
+
+# WebSocket Authentication Research
+
+## Summary
+[2-3 sentence overview]
+
+## Linked Tasks
+- Epic: T2490
+- Task: T2500
+
+---
+[subagent-protocol-base.md content injected here]
+---
+[task-system-integration.md content injected here]
+```
+
+### Key Takeaways
+
+1. **Developers write templates** — SKILL.md files use `{{TOKEN}}` placeholders for all variable values
+2. **The orchestrator resolves tokens** — Before spawning, every `{{TOKEN}}` is replaced with a concrete value for the current task context
+3. **Subagents receive concrete values** — The subagent never sees `{{TOKEN}}` syntax. It gets a fully resolved prompt with real task IDs, dates, file paths, and commands
+4. **`@` references are inlined** — References like `@protocols/research.md` and `@skills/_shared/subagent-protocol-base.md` are read and inlined by the orchestrator
+5. **The protocol stack is invisible to the developer** — Shared resources from `_shared/` are appended beneath the SKILL.md body. Skills don't need to duplicate this content.
+
+### Writing a SKILL.md That Uses Context Injection Effectively
+
+Follow these patterns when creating skills that will be injected into subagent spawns:
+
+**Use tokens for all variable values:**
+```markdown
+# GOOD — portable, works after token resolution
+Write output to: `{{OUTPUT_DIR}}/{{DATE}}_{{TOPIC_SLUG}}.md`
+Complete the task: `{{TASK_COMPLETE_CMD}} {{TASK_ID}}`
+
+# BAD — hardcoded, breaks with different tasks/environments
+Write output to: `claudedocs/agent-outputs/2026-01-15_my-topic.md`
+Complete the task: `cleo complete T1234`
+```
+
+**Document expected tokens in a parameters table:**
+```markdown
+## Parameters (Orchestrator-Provided)
+
+| Parameter | Description | Required |
+|-----------|-------------|----------|
+| `{{TASK_ID}}` | Current task identifier | Yes |
+| `{{DATE}}` | Current date (YYYY-MM-DD) | Yes |
+| `{{TOPIC_SLUG}}` | URL-safe topic name for file naming | Yes |
+| `{{EPIC_ID}}` | Parent epic identifier | No |
+```
+
+**Reference shared protocols instead of duplicating them:**
+```markdown
+## Subagent Protocol
+
+@skills/_shared/subagent-protocol-base.md
+
+# ↑ This @reference tells CLEO to inject the shared protocol content here.
+# The developer doesn't need to copy the 200+ lines of output rules.
+```
+
+---
+
+## Defining Skills by Tier: Planning Tier Example
+
+CLEO organizes skills into four tiers that reflect their role in the orchestration hierarchy:
+
+| Tier | Role | When Used | Examples |
+|------|------|-----------|---------|
+| **0** | Orchestration | Coordinates other skills, never implements directly | ct-orchestrator |
+| **1** | Planning | Analyzes, decomposes, and plans before execution begins | ct-epic-architect |
+| **2** | Execution | Implements, tests, validates — produces concrete deliverables | ct-task-executor, ct-spec-writer, ct-research-agent |
+| **3** | Specialized | Domain-specific tools, composition skills, meta skills | ct-documentor, ct-docs-lookup, ct-gitbook |
+
+### What Makes a Planning Tier (Tier 1) Skill Different
+
+Planning skills (tier 1) have distinct characteristics:
+
+1. **Output is structure, not code** — They produce task trees, dependency graphs, and execution plans rather than implementation artifacts
+2. **They feed the orchestrator** — Their output tells the orchestrator what to spawn next and in what order
+3. **They operate before execution begins** — In the RCSD pipeline, planning (decomposition) precedes implementation
+4. **They create tasks, not complete them** — They use `cleo add` more than `cleo complete`
+
+### Complete Tier 1 Skill Example: `ct-epic-architect`
+
+Here is the full `SKILL.md` for a planning-tier skill with annotations explaining each decision:
+
+```yaml
+---
+name: ct-epic-architect
+description: >-
+  Epic planning and task decomposition for breaking down large initiatives
+  into atomic, executable tasks. Provides dependency analysis, wave-based
+  parallel execution planning, hierarchy management, and research linking.
+  Use when creating epics, decomposing initiatives into task trees, planning
+  parallel workflows, or analyzing task dependencies. Triggers on epic
+  creation, task decomposition requests, or planning phase work.
+version: 3.0.0
+tier: 1                           # ← PLANNING tier, not execution
+core: false
+category: recommended             # ← Part of the standard RCSD pipeline
+protocol: decomposition           # ← Binds to protocols/decomposition.md
+dependencies: []                  # ← No runtime deps on other skills
+sharedResources:
+  - subagent-protocol-base        # ← Lifecycle rules
+  - task-system-integration       # ← Task commands
+compatibility:
+  - claude-code
+  - cursor
+  - windsurf
+  - gemini-cli
+license: MIT
+---
+```
+
+**Body content (after the closing `---`):**
+
+```markdown
+# Epic Architect Context Injection
+
+**Protocol**: @protocols/decomposition.md
+**Type**: Context Injection (cleo-subagent)
+**Version**: 3.0.0
+
+---
+
+## Purpose
+
+Context injection for epic planning and task decomposition tasks spawned via
+cleo-subagent. Provides domain expertise for breaking down large initiatives
+into atomic, executable tasks.
+
+---
+
+## Capabilities
+
+1. **Epic Creation** - Parent epic with full metadata and file attachments
+2. **Task Decomposition** - Atomic tasks with acceptance criteria
+3. **Dependency Analysis** - Wave-based parallel execution planning
+4. **Research Linking** - Connect research outputs to tasks
+5. **HITL Clarification** - Ask when requirements are ambiguous
+
+---
+
+## Execution Sequence
+
+1. Read task: `{{TASK_SHOW_CMD}} {{TASK_ID}}`
+2. Set focus: `{{TASK_FOCUS_CMD}} {{TASK_ID}}`
+3. Analyze the initiative scope
+4. Create epic and decompose into child tasks
+5. Establish dependency graph and execution waves
+6. Complete task: `{{TASK_COMPLETE_CMD}} {{TASK_ID}}`
+
+---
+
+## Decomposition Rules
+
+### Task Atomicity
+Each task MUST be completable by a single subagent in a single session.
+If a task requires multiple skills or sessions, decompose further.
+
+### Dependency Waves
+Group tasks into parallel execution waves:
+- Wave 1: No dependencies (can start immediately)
+- Wave 2: Depends only on Wave 1 tasks
+- Wave 3: Depends on Wave 1 or Wave 2 tasks
+
+### Hierarchy Limits
+- Maximum depth: 3 levels (epic → task → subtask)
+- Maximum siblings: 7 per parent
+- Each task must have acceptance criteria
+
+---
+
+## Output Format
+
+Write decomposition to: `{{OUTPUT_DIR}}/{{TASK_ID}}-decomposition.md`
+
+The output must include:
+1. Epic summary with scope definition
+2. Task list with IDs, titles, and acceptance criteria
+3. Dependency graph showing blocking relationships
+4. Wave assignment for parallel execution
+5. Estimated complexity per task (small/medium/large)
+```
+
+### How Tier Affects Dispatch
+
+The `tier` field directly influences how the orchestrator routes work:
+
+```
+Orchestrator dispatch priority:
+  1. Check by_protocol  → "decomposition" → ct-epic-architect (tier 1)
+  2. Check by_task_type  → "planning"      → ct-epic-architect (tier 1)
+  3. Check by_keyword    → "epic|plan"     → ct-epic-architect (tier 1)
+```
+
+Tier 1 skills are dispatched **before** tier 2 skills in the RCSD pipeline:
+
+```
+RCSD Pipeline:
+  Research (tier 2) → Consensus (tier 2) → Specification (tier 2) → Decomposition (tier 1)
+                                                                           │
+                                                                           ▼
+  Implementation (tier 2) → Contribution (tier 2) → Release (tier 2)
+```
+
+The decomposition step (tier 1) creates the task tree that tier 2 skills execute.
+
+### Creating Your Own Planning Tier Skill
+
+To create a new tier 1 skill, follow the ct-epic-architect pattern:
+
+```yaml
+---
+name: ct-sprint-planner
+description: >-
+  Sprint planning and capacity allocation for mapping decomposed tasks
+  to time-boxed iterations. Analyzes task complexity, team capacity, and
+  dependencies to produce balanced sprint plans. Use when planning sprints,
+  allocating work across iterations, or balancing team workload.
+version: 1.0.0
+tier: 1                           # ← Planning tier
+core: false
+category: specialist
+protocol: decomposition           # ← Reuses decomposition protocol
+dependencies:
+  - ct-epic-architect             # ← Needs decomposed task tree as input
+sharedResources:
+  - subagent-protocol-base
+  - task-system-integration
+compatibility:
+  - claude-code
+  - cursor
+  - windsurf
+  - gemini-cli
+license: MIT
+---
+```
+
+**Directory structure:**
+
+```
+skills/ct-sprint-planner/
+├── SKILL.md                      # Required — frontmatter + instructions
+├── references/                   # Optional
+│   └── sprint-templates.md       # Sprint plan templates
+└── assets/                       # Optional
+    └── capacity-calculator.md    # Capacity estimation formulas
+```
+
+After creating the skill:
+
+```bash
+# Validate frontmatter
+bash scripts/build-index.sh
+
+# Add to dispatch config (dispatch-config.json)
+# Then regenerate manifest
+node scripts/build-manifest.js
+```
+
+Expected build output:
+```
+OK: ct-sprint-planner (v1.0.0 tier:1 core:false cat:specialist proto:decomposition 80 lines, 350 char desc, 1 refs)
 ```
 
 ---

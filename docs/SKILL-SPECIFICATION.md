@@ -329,6 +329,240 @@ Both manifests derive `name` and `description` from SKILL.md frontmatter — the
 
 See `docs/DEVELOPER-GUIDE.md` for detailed manifest configuration examples and token budget guidance.
 
+## Tier Definitions and Skill Examples
+
+CLEO organizes skills into four hierarchical tiers. Each tier serves a distinct role in the orchestration pipeline, and skills at each tier follow different patterns.
+
+### Tier 0: Orchestration
+
+**Role**: Coordinates workflows. Never implements directly. Reads only manifest summaries.
+
+**Characteristics**:
+- Spawns other skills via the Task tool
+- Enforces ORC-001 through ORC-008 constraints
+- Manages context budget by delegating all detailed work
+- Single skill: `ct-orchestrator`
+
+```yaml
+---
+name: ct-orchestrator
+tier: 0
+core: true
+category: core
+protocol: agent-protocol
+---
+```
+
+### Tier 1: Planning
+
+**Role**: Analyzes, decomposes, and plans before execution begins. Outputs structure (task trees, dependency graphs) rather than implementation artifacts.
+
+**Characteristics**:
+- Creates tasks and epics, not deliverables
+- Feeds the orchestrator with execution plans
+- Operates in the RCSD pipeline before implementation
+- Uses `cleo add` more than `cleo complete`
+
+**Complete SKILL.md example for a Tier 1 planning skill:**
+
+```yaml
+---
+name: ct-epic-architect
+description: >-
+  Epic planning and task decomposition for breaking down large initiatives
+  into atomic, executable tasks. Provides dependency analysis, wave-based
+  parallel execution planning, hierarchy management, and research linking.
+  Use when creating epics, decomposing initiatives into task trees, planning
+  parallel workflows, or analyzing task dependencies.
+version: 3.0.0
+tier: 1
+core: false
+category: recommended
+protocol: decomposition
+dependencies: []
+sharedResources:
+  - subagent-protocol-base
+  - task-system-integration
+compatibility:
+  - claude-code
+  - cursor
+  - windsurf
+  - gemini-cli
+license: MIT
+---
+```
+
+Body (after closing `---`):
+
+```markdown
+# Epic Architect Context Injection
+
+**Protocol**: @protocols/decomposition.md
+**Type**: Context Injection (cleo-subagent)
+
+## Purpose
+
+Context injection for epic planning and task decomposition. Breaks down
+large initiatives into atomic, executable tasks with dependency analysis
+and wave-based parallel execution planning.
+
+## Execution Sequence
+
+1. Read task: `{{TASK_SHOW_CMD}} {{TASK_ID}}`
+2. Set focus: `{{TASK_FOCUS_CMD}} {{TASK_ID}}`
+3. Analyze initiative scope
+4. Create epic: `cleo add "Epic: <title>" --type epic`
+5. Decompose into child tasks with dependencies
+6. Establish execution waves
+7. Complete: `{{TASK_COMPLETE_CMD}} {{TASK_ID}}`
+
+## Decomposition Rules
+
+- Each task MUST be completable by a single subagent in one session
+- Maximum depth: 3 levels (epic → task → subtask)
+- Maximum siblings: 7 per parent
+- Each task MUST have acceptance criteria
+- Group tasks into parallel execution waves
+
+## Output
+
+Write decomposition to: `{{OUTPUT_DIR}}/{{TASK_ID}}-decomposition.md`
+```
+
+**File placement**: `skills/ct-epic-architect/SKILL.md`
+
+### Tier 2: Execution
+
+**Role**: Implements, tests, validates — produces concrete deliverables. The workhorse tier.
+
+**Characteristics**:
+- Produces files, code, specifications, or reports
+- Follows the subagent protocol (output file + manifest entry)
+- Binds to specific protocols (implementation, research, specification, etc.)
+- Receives token-resolved context from the orchestrator
+
+```yaml
+---
+name: ct-task-executor
+tier: 2
+core: true
+category: core
+protocol: implementation
+---
+```
+
+### Tier 3: Specialized
+
+**Role**: Domain-specific tools, composition skills, meta skills. Often invoked by other skills rather than directly by the orchestrator.
+
+**Characteristics**:
+- May compose into larger workflows (ct-docs-lookup → ct-documentor)
+- May have no protocol binding (`protocol: null`)
+- Includes meta skills about the skill ecosystem itself
+
+```yaml
+---
+name: ct-docs-lookup
+tier: 3
+core: false
+category: composition
+protocol: null
+---
+```
+
+### Choosing the Right Tier for a New Skill
+
+| If your skill... | Use tier |
+|-------------------|---------|
+| Coordinates other skills without implementing | 0 (orchestration) |
+| Creates task trees, plans, or execution orders | 1 (planning) |
+| Produces deliverables (code, specs, reports) | 2 (execution) |
+| Is a specialized tool invoked by other skills | 3 (specialized) |
+
+---
+
+## Context Injection: How SKILL.md Becomes a Subagent Prompt
+
+Skills are context injection templates, not standalone programs. The orchestrator reads a SKILL.md, resolves all tokens, assembles the protocol stack, and injects the result as the subagent's prompt.
+
+### Token Resolution
+
+SKILL.md files use `{{TOKEN}}` placeholders for all variable values. The orchestrator resolves these before injection:
+
+| In SKILL.md (template) | After resolution (subagent receives) |
+|------------------------|--------------------------------------|
+| `{{TASK_ID}}` | `T2500` |
+| `{{DATE}}` | `2026-02-12` |
+| `{{TOPIC_SLUG}}` | `websocket-auth` |
+| `{{OUTPUT_DIR}}` | `claudedocs/agent-outputs` |
+| `{{TASK_FOCUS_CMD}} {{TASK_ID}}` | `cleo focus set T2500` |
+| `{{TASK_COMPLETE_CMD}} {{TASK_ID}}` | `cleo complete T2500` |
+
+**Critical rule**: Subagents CANNOT resolve `{{TOKEN}}` placeholders. The orchestrator MUST resolve ALL tokens before spawning.
+
+### Protocol Stack Assembly
+
+The orchestrator builds a layered context from multiple sources:
+
+```
+What the subagent receives (assembled top to bottom):
+┌──────────────────────────────────────────────────┐
+│ SKILL.md body (token-resolved)                    │  ← "How to do research"
+├──────────────────────────────────────────────────┤
+│ protocols/research.md (from `protocol` field)    │  ← "Research rules"
+├──────────────────────────────────────────────────┤
+│ _shared/subagent-protocol-base.md                │  ← "Output format"
+├──────────────────────────────────────────────────┤
+│ _shared/task-system-integration.md               │  ← "Task commands"
+└──────────────────────────────────────────────────┘
+```
+
+The subagent sees this as a single context. It follows the skill-specific instructions at the top, with shared protocol rules available beneath.
+
+### `@` Reference Resolution
+
+`@` references in SKILL.md are resolved by the orchestrator at spawn time:
+
+```markdown
+## Subagent Protocol
+
+@skills/_shared/subagent-protocol-base.md
+```
+
+This directive tells the orchestrator to read `_shared/subagent-protocol-base.md` and inline its content at this position. The subagent never sees the `@` reference — it sees the full protocol content.
+
+### Writing Skills for Context Injection
+
+**Use tokens for all variable values** — never hardcode task IDs, dates, or paths:
+
+```markdown
+## CORRECT — uses tokens
+1. Read task: `{{TASK_SHOW_CMD}} {{TASK_ID}}`
+2. Write output: `{{OUTPUT_DIR}}/{{DATE}}_{{TOPIC_SLUG}}.md`
+3. Complete: `{{TASK_COMPLETE_CMD}} {{TASK_ID}}`
+
+## WRONG — hardcoded values
+1. Read task: `cleo show T1234`
+2. Write output: `claudedocs/agent-outputs/2026-01-15_my-topic.md`
+3. Complete: `cleo complete T1234`
+```
+
+**Document expected tokens** so the orchestrator knows what to provide:
+
+```markdown
+## Parameters (Orchestrator-Provided)
+
+| Parameter | Description | Required |
+|-----------|-------------|----------|
+| `{{TASK_ID}}` | Current task identifier | Yes |
+| `{{DATE}}` | Current date (YYYY-MM-DD) | Yes |
+| `{{TOPIC_SLUG}}` | URL-safe topic name | Yes |
+```
+
+See `docs/DEVELOPER-GUIDE.md` for a complete before/after walkthrough of token resolution.
+
+---
+
 ## Cross-Agent Compatibility
 
 Skills in this repo target the broadest agent compatibility through agentskills.io compliance:
@@ -340,4 +574,4 @@ Skills in this repo target the broadest agent compatibility through agentskills.
 | Copilot | `.github/skills/` | Native |
 | Others | Manual copy | Read as Markdown |
 
-CLEO extension fields (`version`, `tier`) are ignored by non-CLEO agents. The standard `name` and `description` fields ensure universal discoverability.
+CLEO extension fields (`version`, `tier`, `core`, `category`, `protocol`, `dependencies`, `sharedResources`) are ignored by non-CLEO agents. The standard `name` and `description` fields ensure universal discoverability.
