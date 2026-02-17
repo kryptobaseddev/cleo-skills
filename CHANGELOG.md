@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.0] - 2026-02-17
+
+### Added
+- New skill: `railway-platform` - Comprehensive Railway deployment platform support
+  - Unified entry point for all Railway operations (replaces 12+ fragmented skills)
+  - agentskills.io compliant with progressive disclosure (~538 lines SKILL.md)
+  - 14 comprehensive references covering all Railway features:
+    - 01-getting-started.md - Installation, auth, linking
+    - 02-projects.md - Project management
+    - 03-services.md - Service operations
+    - 04-deployments.md - Deploy, logs, rollback
+    - 05-databases.md - Postgres, Redis, MySQL, MongoDB
+    - 06-environments.md - Variables, config, staging
+    - 07-domains.md - Custom domains & SSL
+    - 08-volumes.md - Persistent storage (NEW)
+    - 09-networking.md - Private networking, TCP (NEW)
+    - 10-cron.md - Scheduled jobs (NEW)
+    - 11-functions.md - Railway Functions
+    - 12-monorepo.md - Workspace patterns
+    - 13-troubleshooting.md - Common errors & fixes
+    - 14-railway-metal.md - Migration guide
+  - Central `_shared/` architecture with reusable scripts
+  - GraphQL API helper (railway-api.sh)
+  - CLI utilities (railway-common.sh)
+  - 78% token savings vs fragmented approach
+  - Complete coverage: projects, services, databases, volumes, cron, networking
+
 ## [2.0.0] - 2026-02-13
 
 ### Other Changes

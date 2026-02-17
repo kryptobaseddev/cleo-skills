@@ -1,6 +1,6 @@
 {
   "name": "@cleocode/ct-skills",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Official skills library for the CLEO multi-agent orchestration ecosystem. Registry/catalog API for skill discovery, dependency resolution, and install profiles.",
   "main": "index.js",
   "types": "index.d.ts",
