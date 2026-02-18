@@ -58,6 +58,7 @@ CLEO (orchestrator) ──► CAAMP (install/manage) ──► cleo-skills (this
 | [ct-docs-review](skills/ct-docs-review/) | Documentation review and style checking |
 | [ct-skill-creator](skills/ct-skill-creator/) | Guide for creating new skills |
 | [ct-skill-lookup](skills/ct-skill-lookup/) | Skill discovery and marketplace search |
+| [railway-platform](skills/railway-platform/) | Railway deployment platform (projects, services, databases, volumes, cron, networking) |
 
 ### Standalone — Universal
 
@@ -117,6 +118,12 @@ cleo-skills/
 │   ├── ct-orchestrator/         # Skill with references/
 │   │   ├── SKILL.md
 │   │   └── references/
+│   ├── railway-platform/        # Skill with _shared/, references/, scripts/
+│   │   ├── SKILL.md
+│   │   ├── _shared/             # Shared scripts (railway-api.sh, railway-common.sh)
+│   │   ├── references/          # 14 detailed references
+│   │   ├── scripts/             # Skill-specific scripts
+│   │   └── assets/
 │   └── ct-*/                    # Other skills (SKILL.md only)
 └── LICENSE
 ```
