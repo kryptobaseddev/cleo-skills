@@ -2,8 +2,8 @@
   "$schema": "https://cleo-dev.com/schemas/v1/skills-manifest.schema.json",
   "_meta": {
     "schemaVersion": "2.2.0",
-    "lastUpdated": "2026-02-13",
-    "totalSkills": 17,
+    "lastUpdated": "2026-02-19",
+    "totalSkills": 18,
     "generatedFrom": "scripts/build-manifest.js (frontmatter + dispatch-config.json)",
     "architectureNote": "Universal Subagent Architecture: All spawns use single agent type 'cleo-subagent' with skill/protocol injection."
   },
@@ -618,8 +618,8 @@
     },
     {
       "name": "ct-orchestrator",
-      "version": "2.1.0",
-      "description": "This skill should be used when the user asks to \"orchestrate\", \"orchestrator mode\", \"run as orchestrator\", \"delegate to subagents\", \"coordinate agents\", \"spawn subagents\", \"multi-agent workflow\", \"context-protected workflow\", \"agent farm\", \"HITL orchestration\", or needs to manage complex workflows by delegating work to subagents while protecting the main context window. Enforces ORC-001 through ORC-008 constraints.",
+      "version": "3.0.0",
+      "description": "This skill should be used when the user asks to \"orchestrate\", \"orchestrator mode\", \"run as orchestrator\", \"delegate to subagents\", \"coordinate agents\", \"spawn subagents\", \"multi-agent workflow\", \"context-protected workflow\", \"agent farm\", \"HITL orchestration\", or needs to manage complex workflows by delegating work to subagents while protecting the main context window. Enforces ORC-001 through ORC-009 constraints.",
       "path": "skills/ct-orchestrator",
       "tags": [
         "workflow",
@@ -1142,6 +1142,51 @@
             "standards",
             "requirements"
           ]
+        }
+      },
+      "constraints": {
+        "max_context_tokens": 60000,
+        "requires_session": false,
+        "requires_epic": false
+      }
+    },
+    {
+      "name": "railway-platform",
+      "version": "1.0.0",
+      "description": "Deploy and manage applications on Railway platform. Use for creating projects, deploying services (Node.js, Python, Go, Docker, static sites), managing databases (Postgres, Redis, MySQL, MongoDB), configuring domains, environment variables, volumes, cron jobs, and networking. Integrates with GitHub for auto-deploys. Supports monorepos, private networking, and Railway Metal infrastructure.",
+      "path": "skills/railway-platform",
+      "tags": [],
+      "status": "active",
+      "tier": 3,
+      "token_budget": 6000,
+      "references": [
+        "skills/railway-platform/references/01-getting-started.md",
+        "skills/railway-platform/references/02-projects.md",
+        "skills/railway-platform/references/03-services.md",
+        "skills/railway-platform/references/04-deployments.md",
+        "skills/railway-platform/references/05-databases.md",
+        "skills/railway-platform/references/06-environments.md",
+        "skills/railway-platform/references/07-domains.md",
+        "skills/railway-platform/references/08-volumes.md",
+        "skills/railway-platform/references/09-networking.md",
+        "skills/railway-platform/references/10-cron.md",
+        "skills/railway-platform/references/11-functions.md",
+        "skills/railway-platform/references/12-monorepo.md",
+        "skills/railway-platform/references/13-troubleshooting.md",
+        "skills/railway-platform/references/14-railway-metal.md"
+      ],
+      "capabilities": {
+        "inputs": [],
+        "outputs": [],
+        "dependencies": [],
+        "dispatch_triggers": [],
+        "compatible_subagent_types": [
+          "general-purpose"
+        ],
+        "chains_to": [],
+        "dispatch_keywords": {
+          "primary": [],
+          "secondary": []
         }
       },
       "constraints": {

@@ -5,12 +5,17 @@ description: |
   "run as orchestrator", "delegate to subagents", "coordinate agents", "spawn subagents",
   "multi-agent workflow", "context-protected workflow", "agent farm", "HITL orchestration",
   or needs to manage complex workflows by delegating work to subagents while protecting
-  the main context window. Enforces ORC-001 through ORC-008 constraints.
-version: 2.1.0
+  the main context window. Enforces ORC-001 through ORC-009 constraints.
+version: 3.0.0
 tier: 0
 core: true
 category: core
 protocol: agent-protocol
+mvi_scope: orchestrator
+requires_tiers:
+  - minimal
+  - standard
+  - orchestrator
 dependencies: []
 sharedResources:
   - subagent-protocol-base
@@ -39,8 +44,8 @@ You are the **Orchestrator** - a conductor, not a musician. Coordinate complex w
 | ORC-001 | Stay high-level | "If you're reading code, you're doing it wrong" |
 | ORC-002 | Delegate ALL work | "Every implementation is a spawned subagent" |
 | ORC-003 | No full file reads | "Manifests are your interface to subagent output" |
-| ORC-004 | Dependency order | "Check `cleo deps` before every spawn" |
-| ORC-005 | Context budget (10K) | "Monitor with `cleo orchestrator context`" |
+| ORC-004 | Dependency order | "Check dependencies before every spawn" |
+| ORC-005 | Context budget (10K) | "Monitor with context query" |
 | ORC-006 | Max 3 files per agent | "Scope limit - cross-file reasoning degrades" |
 | ORC-007 | All work traced to Epic | "No orphaned work - every task has parent" |
 | ORC-008 | Zero architectural decisions | "Architecture MUST be pre-decided by HITL" |
@@ -50,29 +55,36 @@ You are the **Orchestrator** - a conductor, not a musician. Coordinate complex w
 
 **CRITICAL**: Start EVERY orchestrator conversation with this protocol. Never assume state.
 
-### Quick Start (Recommended)
+### Quick Start — MCP (Recommended)
+
+```
+cleo_query({ domain: "orchestrate", operation: "start", params: { epicId: "T1575" }})
+```
+
+**Returns**: Session state, context budget, next task, and recommended action in one call.
+
+### Quick Start — CLI (Fallback)
 
 ```bash
 cleo orchestrator start --epic T1575
 ```
 
-**Returns**: Session state, context budget, next task, and recommended action in one command.
+### Manual Startup
 
-### Manual Startup (Alternative)
-
-```bash
+```
 # 1. Check for existing work
-cleo session list --status active      # Active sessions?
-cleo research pending                  # Unfinished subagent work?
-cleo focus show                        # Current task focus?
+cleo_query({ domain: "session", operation: "list" })
+cleo_query({ domain: "research", operation: "pending" })
+cleo_query({ domain: "session", operation: "status" })
 
 # 2. Get epic overview
-cleo dash --compact                    # Project state summary
+cleo_query({ domain: "system", operation: "dash" })
 
 # 3. Resume or start
-cleo session resume <session-id>       # Resume existing
+cleo_mutate({ domain: "session", operation: "resume", params: { sessionId: "<id>" }})
 # OR
-cleo session start --scope epic:T1575 --auto-focus  # Start new
+cleo_mutate({ domain: "session", operation: "start",
+  params: { scope: "epic:T1575", name: "Work", autoFocus: true }})
 ```
 
 ### Decision Matrix
@@ -87,28 +99,18 @@ cleo session start --scope epic:T1575 --auto-focus  # Start new
 
 ### Session Commands Quick Reference
 
-| Command | Purpose | When to Use |
-|---------|---------|-------------|
-| `cleo session list` | Show all sessions | Start of conversation |
-| `cleo session resume <id>` | Continue existing session | Found active session |
-| `cleo session start --scope epic:T1575` | Begin new session | No active session for epic |
-| `cleo session end` | Close session | Epic complete or stopping work |
-| `cleo focus show` | Current task | Check what's in progress |
-| `cleo focus set T1586` | Set active task | Before spawning subagent |
+| MCP (Primary) | CLI (Fallback) | Purpose |
+|----------------|----------------|---------|
+| `cleo_query({ domain: "session", operation: "list" })` | `cleo session list` | Show all sessions |
+| `cleo_mutate({ domain: "session", operation: "resume", params: { sessionId } })` | `cleo session resume <id>` | Continue existing |
+| `cleo_mutate({ domain: "session", operation: "start", params: { scope, name, autoFocus } })` | `cleo session start --scope epic:T1575 --auto-focus` | Begin new |
+| `cleo_mutate({ domain: "session", operation: "end", params: { note } })` | `cleo session end` | Close session |
+| `cleo_query({ domain: "session", operation: "status" })` | `cleo focus show` | Current task |
+| `cleo_mutate({ domain: "session", operation: "focus-set", params: { taskId } })` | `cleo focus set T1586` | Set active task |
 
 ## Skill Dispatch (Universal Subagent Architecture)
 
 **All spawns use `cleo-subagent`** with protocol injection. No skill-specific agents.
-
-```bash
-source lib/skill-dispatch.sh
-
-# Auto-select protocol based on task metadata
-protocol=$(skill_auto_dispatch "T1234")  # Returns protocol name
-
-# Prepare spawn context with fully-resolved prompt
-context=$(skill_prepare_spawn "$protocol" "T1234")
-```
 
 ### Protocol Dispatch Matrix (7 Conditional Protocols)
 
@@ -138,13 +140,21 @@ Gate check: epic tasks must complete prior RCSD stages before later stages can s
 
 **All spawns follow this pattern:**
 
-```bash
+### MCP (Primary)
+
+```
 # 1. Generate fully-resolved spawn prompt
-cleo orchestrator spawn T1586 --json
+cleo_mutate({ domain: "orchestrate", operation: "spawn", params: { taskId: "T1586" }})
 
 # 2. Spawn with Task tool
 #   subagent_type: "cleo-subagent"
-#   prompt: {spawn_json.prompt}  # Base protocol + conditional protocol (tokens resolved)
+#   prompt: {spawn_result.prompt}  # Base protocol + conditional protocol (tokens resolved)
+```
+
+### CLI (Fallback)
+
+```bash
+cleo orchestrator spawn T1586 --json
 ```
 
 The spawn prompt combines the **Base Protocol** (`agents/cleo-subagent/AGENT.md`) with a **Conditional Protocol** (`protocols/*.md`). All `{{TOKEN}}` placeholders are resolved before injection.
@@ -157,36 +167,35 @@ The spawn prompt combines the **Base Protocol** (`agents/cleo-subagent/AGENT.md`
 
 ### Phase 1: Discovery
 
-```bash
-cleo orchestrator start --epic T1575
-cleo research pending
+```
+cleo_query({ domain: "orchestrate", operation: "start", params: { epicId: "T1575" }})
+cleo_query({ domain: "research", operation: "pending" })
 ```
 
 Check MANIFEST.jsonl for pending followup, review sessions and focus.
 
 ### Phase 2: Planning
 
-```bash
-cleo orchestrator analyze T1575     # Analyze dependency waves
-cleo orchestrator ready --epic T1575  # Get parallel-safe tasks
+```
+cleo_query({ domain: "orchestrate", operation: "analyze", params: { epicId: "T1575" }})
+cleo_query({ domain: "orchestrate", operation: "ready", params: { epicId: "T1575" }})
 ```
 
 Decompose work into subagent-sized chunks with clear completion criteria.
 
 ### Phase 3: Execution
 
-```bash
-cleo orchestrator next --epic T1575  # Get next ready task
-cleo orchestrator spawn T1586        # Generate spawn prompt for cleo-subagent
+```
+cleo_query({ domain: "orchestrate", operation: "next", params: { epicId: "T1575" }})
+cleo_mutate({ domain: "orchestrate", operation: "spawn", params: { taskId: "T1586" }})
 ```
 
 Spawn cleo-subagent with protocol injection. Wait for manifest entry before proceeding.
 
 ### Phase 4: Verification
 
-```bash
-cleo orchestrator validate --subagent <research-id>
-cleo orchestrator context
+```
+cleo_query({ domain: "system", operation: "context" })
 ```
 
 Verify all subagent outputs in manifest. Update CLEO task status.
@@ -195,32 +204,30 @@ Verify all subagent outputs in manifest. Update CLEO task status.
 
 ### Discovery & Status
 
-| Command | Purpose |
-|---------|---------|
-| `cleo find "query"` | Fuzzy search (minimal context) |
-| `cleo show T1234` | Full task details |
-| `cleo dash --compact` | Project overview |
-| `cleo orchestrator ready --epic T1575` | Parallel-safe tasks |
-| `cleo orchestrator next --epic T1575` | Suggest next task |
+| MCP (Primary) | CLI (Fallback) | Purpose |
+|----------------|----------------|---------|
+| `cleo_query({ domain: "tasks", operation: "find", params: { query } })` | `cleo find "query"` | Fuzzy search |
+| `cleo_query({ domain: "tasks", operation: "show", params: { taskId } })` | `cleo show T1234` | Full task details |
+| `cleo_query({ domain: "system", operation: "dash" })` | `cleo dash --compact` | Project overview |
+| `cleo_query({ domain: "orchestrate", operation: "ready", params: { epicId } })` | `cleo orchestrator ready --epic T1575` | Parallel-safe tasks |
+| `cleo_query({ domain: "orchestrate", operation: "next", params: { epicId } })` | `cleo orchestrator next --epic T1575` | Suggest next task |
 
 ### Task Coordination
 
-| Command | Purpose |
-|---------|---------|
-| `cleo add "Task" --parent T1575` | Create child task |
-| `cleo focus set T1586` | Set active task |
-| `cleo complete T1586` | Mark task done |
-| `cleo verify T1586 --all` | Set verification gates |
-| `cleo deps T1586` | Check dependencies |
+| MCP (Primary) | CLI (Fallback) | Purpose |
+|----------------|----------------|---------|
+| `cleo_mutate({ domain: "tasks", operation: "add", params: { title, parent } })` | `cleo add "Task" --parent T1575` | Create child task |
+| `cleo_mutate({ domain: "session", operation: "focus-set", params: { taskId } })` | `cleo focus set T1586` | Set active task |
+| `cleo_mutate({ domain: "tasks", operation: "complete", params: { taskId } })` | `cleo complete T1586` | Mark task done |
 
 ### Manifest & Research
 
-| Command | Purpose |
-|---------|---------|
-| `cleo research list` | List research entries |
-| `cleo research show <id>` | Entry summary (~500 tokens) |
-| `cleo research pending` | Followup items |
-| `cleo research link T1586 <id>` | Link research to task |
+| MCP (Primary) | CLI (Fallback) | Purpose |
+|----------------|----------------|---------|
+| `cleo_query({ domain: "research", operation: "list" })` | `cleo research list` | List entries |
+| `cleo_query({ domain: "research", operation: "show", params: { entryId } })` | `cleo research show <id>` | Entry summary (~500 tokens) |
+| `cleo_query({ domain: "research", operation: "pending" })` | `cleo research pending` | Followup items |
+| `cleo_mutate({ domain: "research", operation: "link", params: { taskId, entryId } })` | `cleo research link T1586 <id>` | Link research to task |
 
 **Context Budget Rule**: Stay under 10K tokens. Use `cleo research list` over reading full files.
 
@@ -234,15 +241,15 @@ Content flows between subagents via **manifest-mediated handoffs**, not through 
 
 ## Common HITL Patterns
 
-| Pattern | When to Use | Key Commands |
-|---------|-------------|--------------|
-| Starting Fresh Epic | New feature work | `cleo add`, `cleo session start`, `cleo orchestrator spawn` |
-| Resuming Interrupted Work | New conversation | `cleo orchestrator start`, `cleo research pending` |
-| Handling Manifest Followups | Subagent left TODOs | `cleo research pending`, `cleo add --parent` |
-| Parallel Execution | Independent tasks in same wave | `cleo orchestrator analyze`, `cleo orchestrator ready` |
-| Phase-Aware Orchestration | Multi-phase epics | `cleo phase show`, `cleo phase advance` |
-| Quality Gates | Verification required | `cleo verify --gate`, `cleo verify --all` |
-| Release | Ship a version | `cleo release create`, `cleo release ship` |
+| Pattern | When to Use | Key Operations |
+|---------|-------------|----------------|
+| Starting Fresh Epic | New feature work | `tasks.add`, `session.start`, `orchestrate.spawn` |
+| Resuming Interrupted Work | New conversation | `orchestrate.start`, `research.pending` |
+| Handling Manifest Followups | Subagent left TODOs | `research.pending`, `tasks.add` |
+| Parallel Execution | Independent tasks in same wave | `orchestrate.analyze`, `orchestrate.ready` |
+| Phase-Aware Orchestration | Multi-phase epics | `lifecycle.show`, `lifecycle.advance` |
+| Quality Gates | Verification required | `validate.report` |
+| Release | Ship a version | `release.create`, `release.ship` |
 
 > Full executable workflows for each pattern: `references/orchestrator-patterns.md`
 
